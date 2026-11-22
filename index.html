@@ -1125,9 +1125,12 @@
             }
         });
         window.addEventListener('DOMContentLoaded', () => {
+            if ('caches' in window) {
+                caches.keys().then(ks => ks.filter(k => k !== 'lava-rapido-cidao-v23').forEach(k => caches.delete(k))).catch(() => {});
+            }
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.update())).catch(() => {});
-                navigator.serviceWorker.register('./sw.js?v=22').catch(() => {});
+                navigator.serviceWorker.register('./sw.js?v=23').catch(() => {});
             }
             loadState(); updateNetworkPillUI(); verifySession(); renderAll();
         });
