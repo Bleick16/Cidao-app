@@ -42,15 +42,22 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <h2 class="font-extrabold text-lg">Lava Rápido Cidão</h2>
 <p class="text-xs text-brand-200">Controle de Acesso — Administrador & Equipe</p>
 </div>
-<div id="auth-setup-panel" class="hidden p-5 space-y-4 text-xs">
+<div id="auth-setup-panel" class="p-5 space-y-4 text-xs">
+<div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+<p class="font-extrabold"><i class="fa-solid fa-shield-halved mr-1"></i>Primeiro Acesso — Criar Conta Administrador</p>
+<p class="mt-0.5 text-[11px]">Crie o PIN do Administrador para liberar o sistema e gerenciar a equipe.</p>
+</div>
 <form onsubmit="handleAdminInitialSetup(event)" class="space-y-3">
 <div><label class="block font-bold mb-1">Nome do Administrador *</label><input type="text" id="setup-admin-name" required value="Cidão" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300"></div>
-<div><label class="block font-bold mb-1">PIN Administrador (4-8 dígitos) *</label><input type="password" inputmode="numeric" id="setup-admin-pin" required minlength="4" maxlength="8" placeholder="1234" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono"></div>
+<div><label class="block font-bold mb-1">PIN Administrador (4-8 dígitos) *</label><input type="password" inputmode="numeric" id="setup-admin-pin" required minlength="4" maxlength="8" placeholder="Ex: 1234" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono"></div>
 <button type="submit" class="w-full py-3 rounded-xl bg-brand-600 text-white font-extrabold">Criar Administrador e Entrar</button>
 </form>
-<div class="pt-3 border-t flex gap-2">
-<input type="url" id="setup-drive-url" placeholder="URL Google Apps Script..." class="flex-1 px-3 py-2 rounded-xl border border-slate-300 font-mono">
+<div class="pt-3 border-t space-y-1.5">
+<p class="font-bold text-slate-600 text-[11px]">Já tem conta no Google Drive?</p>
+<div class="flex gap-2">
+<input type="url" id="setup-drive-url" placeholder="Cole URL Google Apps Script..." class="flex-1 px-3 py-2 rounded-xl border border-slate-300 font-mono">
 <button type="button" onclick="syncAccountFromDriveOnLogin('setup-drive-url')" class="px-3 py-2 rounded-xl bg-sky-600 text-white font-bold">Puxar</button>
+</div>
 </div>
 </div>
 <div id="auth-login-panel" class="hidden p-5 space-y-4 text-xs">
@@ -66,14 +73,13 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <form id="auth-request-form" onsubmit="handleEmployeeAccessRequest(event)" class="hidden space-y-3">
 <input type="text" id="req-emp-name" required placeholder="Nome do Funcionário" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300">
 <input type="text" id="req-emp-device" placeholder="Aparelho (Ex: Celular Pátio)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300">
-<input type="password" inputmode="numeric" id="req-emp-pin" required minlength="4" maxlength="6" placeholder="Crie seu PIN" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono">
+<input type="password" inputmode="numeric" id="req-emp-pin" required minlength="4" maxlength="6" placeholder="Crie seu PIN (4-6 dígitos)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono">
 <button type="submit" class="w-full py-3 rounded-xl bg-brand-600 text-white font-extrabold">Solicitar Acesso</button>
 </form>
 <button type="button" onclick="syncUsersFromDriveOnLockScreen()" class="w-full py-2 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 font-bold">Atualizar Contas do Google Drive</button>
 </div>
 </div>
 </div>
-
 <div class="min-h-[100dvh] flex flex-col lg:flex-row">
 <aside class="w-full lg:w-64 bg-slate-900 text-white lg:min-h-[100dvh] lg:sticky lg:top-0 flex-shrink-0 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800">
 <div>
@@ -101,7 +107,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <button type="button" onclick="logoutCurrentSession()" class="w-full py-2 px-4 rounded-xl bg-slate-800/70 text-amber-300 text-xs font-semibold">Trocar Usuário / Sair</button>
 </div>
 </aside>
-
 <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-900 border-t border-slate-800 text-slate-300 flex items-center justify-around px-1 py-1.5">
 <button type="button" onclick="switchTab('dashboard')" id="mnav-dashboard" class="flex-1 flex flex-col items-center py-1 text-brand-400 font-bold text-[10px]"><i class="fa-solid fa-gauge-high text-base"></i><span>Início</span></button>
 <button type="button" onclick="switchTab('clients')" id="mnav-clients" class="flex-1 flex flex-col items-center py-1 text-slate-400 text-[10px]"><i class="fa-solid fa-users text-base"></i><span>Clientes</span></button>
@@ -110,7 +115,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <button type="button" onclick="switchTab('team')" id="mnav-team" class="admin-only-el flex-1 flex flex-col items-center py-1 text-slate-400 text-[10px]"><i class="fa-solid fa-user-shield text-base text-amber-400"></i><span>Equipe</span></button>
 <button type="button" onclick="switchTab('backup')" id="mnav-backup" class="admin-only-el flex-1 flex flex-col items-center py-1 text-slate-400 text-[10px]"><i class="fa-brands fa-google-drive text-base text-sky-400"></i><span>Drive</span></button>
 </nav>
-
 <main class="flex-1 w-full max-w-full min-w-0 p-3 sm:p-5 space-y-3 overflow-x-hidden">
 <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs text-emerald-950">
 <div class="flex flex-wrap items-center gap-2">
@@ -120,7 +124,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 <button type="button" onclick="forceSaveAndSync()" class="font-bold text-brand-700"><i class="fa-solid fa-rotate mr-1"></i>Sincronizar</button>
 </div>
-
 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm flex flex-col md:flex-row gap-3">
 <div class="relative flex-1" id="global-search-wrapper">
 <div class="relative flex items-center">
@@ -137,7 +140,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 <input type="file" id="ocr-plate-file-input" accept="image/*" capture="environment" onchange="handlePlateOCRFileChange(event)" class="hidden">
-
 <section id="tab-dashboard" class="space-y-4">
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
 <div class="bg-white p-4 rounded-2xl border"><span class="text-xs text-slate-500 font-semibold">Em Atendimento</span><p id="kpi-active-os" class="text-2xl font-extrabold mt-1">0</p></div>
@@ -157,7 +159,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <div id="os-list-container" class="divide-y"></div>
 </div>
 </section>
-
 <section id="tab-clients" class="hidden space-y-4">
 <div class="bg-white rounded-2xl border p-4 flex flex-wrap items-center justify-between gap-2">
 <h2 class="font-bold text-base">Clientes Cadastrados</h2>
@@ -165,7 +166,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 <div id="clients-grid-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
 </section>
-
 <section id="tab-prices" class="hidden space-y-4">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 <div class="bg-white rounded-2xl border p-5 space-y-3">
@@ -189,7 +189,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 </section>
-
 <section id="tab-team" class="hidden space-y-4">
 <div class="bg-white rounded-2xl border p-5 space-y-4">
 <h2 class="font-bold text-base">Equipe & Controle de Acesso</h2>
@@ -202,7 +201,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 <div id="team-accounts-list" class="divide-y"></div>
 </div>
 </section>
-
 <section id="tab-backup" class="hidden space-y-4">
 <div class="bg-white rounded-2xl border p-5 space-y-3 text-xs">
 <h2 class="font-bold text-base">Google Drive & Backup JSON</h2>
@@ -216,8 +214,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </section>
 </main>
 </div>
-
-<!-- MODALS -->
 <div id="client-modal" class="mobile-sheet-container fixed inset-0 bg-slate-950/75 z-50 hidden flex items-center justify-center p-2">
 <div class="mobile-sheet-card bg-white rounded-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[92dvh]">
 <div class="px-4 py-3 bg-slate-900 text-white flex justify-between items-center"><h3 class="font-bold text-sm">Cadastro de Cliente, Carros & Tapetes</h3><button type="button" onclick="closeModal('client-modal')" class="p-1"><i class="fa-solid fa-xmark text-xl"></i></button></div>
@@ -244,7 +240,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </form>
 </div>
 </div>
-
 <div id="client-items-modal" class="mobile-sheet-container fixed inset-0 bg-slate-950/75 z-50 hidden flex items-center justify-center p-2">
 <div class="mobile-sheet-card bg-white rounded-2xl max-w-3xl w-full overflow-hidden flex flex-col max-h-[92dvh]">
 <div class="px-4 py-3 bg-slate-900 text-white flex justify-between items-center">
@@ -261,7 +256,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 </div>
-
 <div id="os-modal" class="mobile-sheet-container fixed inset-0 bg-slate-950/75 z-50 hidden flex items-center justify-center p-2">
 <div class="mobile-sheet-card bg-white rounded-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[92dvh]">
 <div class="px-4 py-3 bg-slate-900 text-white flex justify-between items-center"><h3 class="font-bold text-sm">Ordem de Serviço (OS)</h3><button type="button" onclick="closeModal('os-modal')" class="p-1"><i class="fa-solid fa-xmark text-xl"></i></button></div>
@@ -287,7 +281,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </form>
 </div>
 </div>
-
 <div id="receipt-modal" class="fixed inset-0 bg-slate-950/80 z-[70] hidden flex items-center justify-center p-2">
 <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden flex flex-col max-h-[92dvh]">
 <div class="no-print px-4 py-3 bg-slate-900 text-white flex justify-between"><h3 class="font-bold text-sm">Comprovante</h3><button type="button" onclick="closeModal('receipt-modal')"><i class="fa-solid fa-xmark text-xl"></i></button></div>
@@ -298,7 +291,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 </div>
-
 <div id="camera-modal" class="mobile-sheet-container fixed inset-0 bg-slate-950/90 z-[75] hidden flex items-center justify-center p-2">
 <div class="mobile-sheet-card bg-slate-900 text-white rounded-2xl max-w-lg w-full overflow-hidden flex flex-col">
 <div class="px-4 py-3 bg-slate-950 flex justify-between"><h3 class="font-bold text-sm">Câmera — Placas & Tapetes</h3><button type="button" onclick="closeCameraModal()"><i class="fa-solid fa-xmark text-xl"></i></button></div>
@@ -322,7 +314,6 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 </div>
-
 <div id="gdrive-modal" class="mobile-sheet-container fixed inset-0 bg-slate-950/80 z-[85] hidden flex items-center justify-center p-2">
 <div class="mobile-sheet-card bg-white rounded-2xl max-w-lg w-full overflow-hidden flex flex-col">
 <div class="px-4 py-3 bg-slate-900 text-white flex justify-between"><h3 class="font-bold text-sm">Google Drive Automático</h3><button type="button" onclick="closeModal('gdrive-modal')"><i class="fa-solid fa-xmark text-xl"></i></button></div>
@@ -333,20 +324,17 @@ html,body{font-family:'Inter',sans-serif;background:#f1f5f9;margin:0;padding:0;m
 </div>
 </div>
 </div>
-
 <script>
 const STORAGE_KEY='lava_rapido_cidao_master_state_v6',SESSION_KEY='lava_rapido_cidao_active_session_v2',GDRIVE_KEY='lava_rapido_cidao_gdrive_cfg_v3';
-const DEFAULT_RUG_TYPES=['Sintético / Polipropileno','Shaggy (Peludo)','Persa / Oriental','Algodão / Tear','Sisal / Fibra Natural','Lã / Kilim','Outro'];
 let appState={clients:[],orders:[],priceTable:{carModels:[{id:'cm1',model:'Fiat Uno',category:'Hatch',price:45},{id:'cm2',model:'Chevrolet Spin',category:'SUV',price:70}],rugDefaultM2:25,rugMaterialRates:{}},accessControl:{admin:null,employees:[]},revisionTimestamp:0};
 let currentUserSession=null,activeTab='dashboard',activeOSFilter='all',activeClientIdForItems=null,draftFormVehicles=[],draftFormRugs=[],cameraStream=null,capturedPhotoDataUrl=null,cameraTargetContext=null,ocrScanTargetContext=null,ocrWorker=null,gdriveConfig={autoEnabled:true,scriptUrl:''};
-
 function uid(p='id'){return p+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function norm(s){return String(s??'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();}
 function digits(s){return String(s??'').replace(/D/g,'');}
 function dec(v){if(typeof v==='number')return isNaN(v)?0:v;const n=parseFloat(String(v??'').replace(/[^d,.-]/g,'').replace(/.(?=d{3}(?:,|$))/g,'').replace(',','.'));return isNaN(n)?0:n;}
 function brl(v){return(Number(v)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
-async function hashPin(p){const c=String(p??'').trim();if(crypto?.subtle){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('cidao_salt_'+c));return Array.from(new Uint8Array(d)).map(b=>b.toString(16).padStart(2,'0')).join('');}return c;}
+async function hashPin(p){const c=String(p??'').trim();if(crypto?.subtle){try{const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('cidao_salt_'+c));return Array.from(new Uint8Array(d)).map(b=>b.toString(16).padStart(2,'0')).join('');}catch(e){}}return c;}
 function showToast(m,t='ok'){const c=document.getElementById('toast-container'),d=document.createElement('div');d.className='px-3.5 py-2.5 rounded-xl shadow-xl text-xs font-bold text-white '+(t==='err'?'bg-red-600':'bg-emerald-600');d.textContent=m;c.appendChild(d);setTimeout(()=>d.remove(),3000);}
 function openModal(id){const e=document.getElementById(id);if(e){e.classList.remove('hidden');e.style.display='flex';}}
 function closeModal(id){const e=document.getElementById(id);if(e){e.classList.add('hidden');e.style.display='';}}
@@ -354,11 +342,9 @@ function openConfirmModal({title,message,onConfirm}){const m=document.getElement
 function closeConfirmModal(){const m=document.getElementById('custom-confirm-modal');if(m){m.classList.add('hidden');m.style.display='none';}}
 function isAdmin(){return currentUserSession?.role==='admin';}
 function reqAdmin(){if(isAdmin())return true;showToast('Apenas o Administrador pode fazer isso.','err');return false;}
-
 function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)appState={...appState,...JSON.parse(r)};}catch(e){}try{const g=localStorage.getItem(GDRIVE_KEY);if(g)gdriveConfig={...gdriveConfig,...JSON.parse(g)};}catch(e){}}
 async function saveState(sync=true){appState.revisionTimestamp=Date.now();localStorage.setItem(STORAGE_KEY,JSON.stringify(appState));document.getElementById('save-counts-badge').textContent=appState.clients.length+' clientes • '+appState.orders.length+' OS';if(sync&&gdriveConfig.scriptUrl)syncBidirectionalGoogleDrive(true);}
 async function forceSaveAndSync(){await saveState(false);if(gdriveConfig.scriptUrl)await syncBidirectionalGoogleDrive(false);else showToast('Salvo localmente!');}
-
 function switchTab(t){if((t==='team'||t==='backup')&&!isAdmin())t='dashboard';activeTab=t;['dashboard','clients','prices','team','backup'].forEach(k=>{document.getElementById('tab-'+k)?.classList.toggle('hidden',k!==t);});renderAll();}
 function applyRoleUI(){const a=isAdmin();document.querySelectorAll('.admin-only-el').forEach(e=>e.classList.toggle('hidden',!a));if(currentUserSession){document.getElementById('session-user-label').textContent=currentUserSession.name+(a?' (Admin)':' (Funcionário)');document.getElementById('active-user-role-subtitle').textContent=currentUserSession.name;}}
 function switchAuthSubPanel(m){document.getElementById('auth-login-form').classList.toggle('hidden',m==='request');document.getElementById('auth-request-form').classList.toggle('hidden',m!=='request');}
@@ -368,20 +354,17 @@ async function handleUserLogin(e){e.preventDefault();const [role,id]=document.ge
 async function handleEmployeeAccessRequest(e){e.preventDefault();appState.accessControl.employees.push({id:uid('emp'),name:document.getElementById('req-emp-name').value.trim(),device:document.getElementById('req-emp-device').value.trim(),pinHash:await hashPin(document.getElementById('req-emp-pin').value.trim()),status:'pending'});await saveState();showLockScreen();switchAuthSubPanel('login');showToast('Solicitação enviada!');}
 function logoutCurrentSession(){currentUserSession=null;localStorage.removeItem(SESSION_KEY);showLockScreen();}
 function verifySession(){if(!appState.accessControl.admin){showLockScreen();return;}if(!currentUserSession){try{currentUserSession=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');}catch(e){}}if(!currentUserSession){showLockScreen();return;}document.getElementById('auth-lock-screen').classList.add('hidden');applyRoleUI();}
-
 async function adminCreateEmployeeAccount(e){e.preventDefault();if(!reqAdmin())return;appState.accessControl.employees.unshift({id:uid('emp'),name:document.getElementById('admin-new-emp-name').value.trim(),device:document.getElementById('admin-new-emp-device').value.trim(),pinHash:await hashPin(document.getElementById('admin-new-emp-pin').value.trim()),status:'authorized'});await saveState();renderTeamTab();showToast('Funcionário autorizado!');}
-function renderTeamTab(){const el=document.getElementById('team-accounts-list');if(!el||!isAdmin())return;el.innerHTML=appState.accessControl.employees.map(e=>'<div class="py-2.5 flex justify-between items-center text-xs"><div><strong>'+esc(e.name)+'</strong> ('+esc(e.status)+')</div><div class="flex gap-2"><button type="button" onclick="setEmpStatus(''+e.id+'','authorized')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">Autorizar</button><button type="button" onclick="setEmpStatus(''+e.id+'','revoked')" class="px-2.5 py-1 rounded bg-amber-100 text-amber-900 font-bold">Bloquear</button></div></div>').join('');}
+function renderTeamTab(){const el=document.getElementById('team-accounts-list');if(!el||!isAdmin())return;el.innerHTML=appState.accessControl.employees.map(e=>'<div class="py-2.5 flex justify-between items-center text-xs"><div><strong>'+esc(e.name)+'</strong> ('+esc(e.status)+')</div><div class="flex gap-2"><button type="button" onclick="setEmpStatus(\''+e.id+'\',\'authorized\')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">Autorizar</button><button type="button" onclick="setEmpStatus(\''+e.id+'\',\'revoked\')" class="px-2.5 py-1 rounded bg-amber-100 text-amber-900 font-bold">Bloquear</button></div></div>').join('');}
 async function setEmpStatus(id,st){if(!reqAdmin())return;const e=appState.accessControl.employees.find(x=>x.id===id);if(e){e.status=st;await saveState();renderTeamTab();}}
-
-function handleGlobalSearch(q){const d=document.getElementById('global-search-dropdown'),nq=norm(q);if(!nq){d.classList.add('hidden');return;}const m=appState.clients.filter(c=>norm(c.name).includes(nq)||digits(c.phone).includes(digits(q))||(c.vehicles||[]).some(v=>norm(v.plate).replace(/[^a-z0-9]/g,'').includes(nq.replace(/[^a-z0-9]/g,''))));d.innerHTML=m.length?m.map(c=>'<div onclick="openClientItemsModal(''+c.id+'');document.getElementById('global-search-dropdown').classList.add('hidden')" class="p-3 hover:bg-slate-50 cursor-pointer flex justify-between text-xs"><div><strong>'+esc(c.name)+'</strong> • '+esc(c.phone)+'</div><span class="font-bold text-brand-600">Abrir →</span></div>').join(''):'<div class="p-3 text-xs text-slate-500">Nenhum resultado.</div>';d.classList.remove('hidden');}
+function handleGlobalSearch(q){const d=document.getElementById('global-search-dropdown'),nq=norm(q);if(!nq){d.classList.add('hidden');return;}const m=appState.clients.filter(c=>norm(c.name).includes(nq)||digits(c.phone).includes(digits(q))||(c.vehicles||[]).some(v=>norm(v.plate).replace(/[^a-z0-9]/g,'').includes(nq.replace(/[^a-z0-9]/g,''))));d.innerHTML=m.length?m.map(c=>'<div onclick="openClientItemsModal(\''+c.id+'\');document.getElementById(\'global-search-dropdown\').classList.add(\'hidden\')" class="p-3 hover:bg-slate-50 cursor-pointer flex justify-between text-xs"><div><strong>'+esc(c.name)+'</strong> • '+esc(c.phone)+'</div><span class="font-bold text-brand-600">Abrir →</span></div>').join(''):'<div class="p-3 text-xs text-slate-500">Nenhum resultado.</div>';d.classList.remove('hidden');}
 function clearGlobalSearch(){document.getElementById('global-search-input').value='';document.getElementById('global-search-dropdown').classList.add('hidden');}
-
 function openNewClientModal(){document.getElementById('client-form').reset();document.getElementById('client-id').value='';draftFormVehicles=[];draftFormRugs=[];renderClientFormItems();openModal('client-modal');}
 function addFormVehicleRow(){draftFormVehicles.push({id:uid('veh'),model:'',plate:'',photos:[]});renderClientFormItems();}
 function addFormRugRow(){draftFormRugs.push({id:uid('rug'),type:'Sintético / Polipropileno',tag:'TAP-'+(draftFormRugs.length+1),width:2,length:3,area:6,photos:[]});renderClientFormItems();}
 function renderClientFormItems(){
-document.getElementById('client-form-vehicles-container').innerHTML=draftFormVehicles.map((v,i)=>'<div class="p-2.5 rounded-xl border bg-slate-50 space-y-2"><div class="grid grid-cols-2 gap-2"><input type="text" id="dv-m-'+i+'" value="'+esc(v.model)+'" placeholder="Modelo Carro" class="px-2.5 py-2 rounded-lg border bg-white"><div class="flex gap-1"><input type="text" id="dv-p-'+i+'" value="'+esc(v.plate)+'" placeholder="Placa" class="w-full px-2.5 py-2 rounded-lg border bg-white font-mono uppercase"><button type="button" onclick="triggerPlateOCRScan('draft','+i+')" class="px-2 rounded-lg bg-amber-100 font-bold"><i class="fa-solid fa-camera-retro"></i></button></div></div><button type="button" onclick="openCam('draft','vehicle','+i+')" class="px-2.5 py-1 rounded bg-brand-600 text-white font-bold">Foto Carro/Placa ('+(v.photos?.length||0)+')</button></div>').join('');
-document.getElementById('client-form-rugs-container').innerHTML=draftFormRugs.map((r,i)=>'<div class="p-2.5 rounded-xl border bg-indigo-50/40 space-y-2"><div class="grid grid-cols-3 gap-2"><input type="text" id="dr-t-'+i+'" value="'+esc(r.tag)+'" placeholder="Etiqueta" class="px-2.5 py-2 rounded-lg border bg-white"><input type="text" id="dr-w-'+i+'" value="'+r.width+'" placeholder="Largura (m)" class="px-2.5 py-2 rounded-lg border bg-white"><input type="text" id="dr-l-'+i+'" value="'+r.length+'" placeholder="Comp. (m)" class="px-2.5 py-2 rounded-lg border bg-white"></div><button type="button" onclick="openCam('draft','rug','+i+')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">Foto Tapete ('+(r.photos?.length||0)+')</button></div>').join('');
+document.getElementById('client-form-vehicles-container').innerHTML=draftFormVehicles.map((v,i)=>'<div class="p-2.5 rounded-xl border bg-slate-50 space-y-2"><div class="grid grid-cols-2 gap-2"><input type="text" id="dv-m-'+i+'" value="'+esc(v.model)+'" placeholder="Modelo Carro" class="px-2.5 py-2 rounded-lg border bg-white"><div class="flex gap-1"><input type="text" id="dv-p-'+i+'" value="'+esc(v.plate)+'" placeholder="Placa" class="w-full px-2.5 py-2 rounded-lg border bg-white font-mono uppercase"><button type="button" onclick="triggerPlateOCRScan(\'draft\','+i+')" class="px-2 rounded-lg bg-amber-100 font-bold"><i class="fa-solid fa-camera-retro"></i></button></div></div><button type="button" onclick="openCam(\'draft\',\'vehicle\','+i+')" class="px-2.5 py-1 rounded bg-brand-600 text-white font-bold">Foto Carro/Placa ('+(v.photos?.length||0)+')</button></div>').join('');
+document.getElementById('client-form-rugs-container').innerHTML=draftFormRugs.map((r,i)=>'<div class="p-2.5 rounded-xl border bg-indigo-50/40 space-y-2"><div class="grid grid-cols-3 gap-2"><input type="text" id="dr-t-'+i+'" value="'+esc(r.tag)+'" placeholder="Etiqueta" class="px-2.5 py-2 rounded-lg border bg-white"><input type="text" id="dr-w-'+i+'" value="'+r.width+'" placeholder="Largura (m)" class="px-2.5 py-2 rounded-lg border bg-white"><input type="text" id="dr-l-'+i+'" value="'+r.length+'" placeholder="Comp. (m)" class="px-2.5 py-2 rounded-lg border bg-white"></div><button type="button" onclick="openCam(\'draft\',\'rug\','+i+')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">Foto Tapete ('+(r.photos?.length||0)+')</button></div>').join('');
 }
 async function saveClient(e){
 e.preventDefault();
@@ -391,18 +374,16 @@ const c={id:uid('cli'),name:document.getElementById('client-name').value.trim(),
 appState.clients.unshift(c);await saveState();closeModal('client-modal');renderAll();showToast('Cliente cadastrado!');
 }
 function deleteClient(id){if(!reqAdmin())return;openConfirmModal({title:'Excluir Cliente',message:'Apagar este cliente?',onConfirm:async()=>{appState.clients=appState.clients.filter(c=>c.id!==id);await saveState();renderAll();}});}
-
 function openClientItemsModal(id){
 const c=appState.clients.find(x=>x.id===id);if(!c)return;activeClientIdForItems=id;
 document.getElementById('detail-client-name').textContent=c.name;document.getElementById('detail-client-contact').textContent=c.phone;
 document.getElementById('detail-new-os-btn').onclick=()=>{closeModal('client-items-modal');openOSModal(null,c.id);};
-document.getElementById('detail-vehicles-list').innerHTML=(c.vehicles||[]).map(v=>'<div class="p-2.5 rounded-xl border flex justify-between items-center"><div><strong>'+esc(v.plate)+'</strong> — '+esc(v.model)+'</div><div class="flex gap-1.5"><button type="button" onclick="openCam('saved','vehicle',''+v.id+'')" class="px-2.5 py-1 rounded bg-brand-600 text-white font-bold">+ Foto</button><button type="button" onclick="closeModal('client-items-modal');openOSModal(null,''+c.id+'','vehicle:'+v.id+'')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">+ OS</button></div></div>').join('');
-document.getElementById('detail-rugs-list').innerHTML=(c.rugs||[]).map(r=>'<div class="p-2.5 rounded-xl border flex justify-between items-center"><div><strong>#'+esc(r.tag)+'</strong> — '+r.area+' m²</div><div class="flex gap-1.5"><button type="button" onclick="openCam('saved','rug',''+r.id+'')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">+ Foto</button><button type="button" onclick="closeModal('client-items-modal');openOSModal(null,''+c.id+'','rug:'+r.id+'')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">+ OS</button></div></div>').join('');
+document.getElementById('detail-vehicles-list').innerHTML=(c.vehicles||[]).map(v=>'<div class="p-2.5 rounded-xl border flex justify-between items-center"><div><strong>'+esc(v.plate)+'</strong> — '+esc(v.model)+'</div><div class="flex gap-1.5"><button type="button" onclick="openCam(\'saved\',\'vehicle\',\''+v.id+'\')" class="px-2.5 py-1 rounded bg-brand-600 text-white font-bold">+ Foto</button><button type="button" onclick="closeModal(\'client-items-modal\');openOSModal(null,\''+c.id+'\',\'vehicle:'+v.id+'\')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">+ OS</button></div></div>').join('');
+document.getElementById('detail-rugs-list').innerHTML=(c.rugs||[]).map(r=>'<div class="p-2.5 rounded-xl border flex justify-between items-center"><div><strong>#'+esc(r.tag)+'</strong> — '+r.area+' m²</div><div class="flex gap-1.5"><button type="button" onclick="openCam(\'saved\',\'rug\',\''+r.id+'\')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">+ Foto</button><button type="button" onclick="closeModal(\'client-items-modal\');openOSModal(null,\''+c.id+'\',\'rug:'+r.id+'\')" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">+ OS</button></div></div>').join('');
 const photos=[];(c.vehicles||[]).forEach(v=>(v.photos||[]).forEach(p=>photos.push(p)));(c.rugs||[]).forEach(r=>(r.photos||[]).forEach(p=>photos.push(p)));
 document.getElementById('detail-client-photos-gallery').innerHTML=photos.map(p=>'<img src="'+p.dataUrl+'" class="w-full aspect-square object-cover rounded-xl border">').join('');
 openModal('client-items-modal');
 }
-
 function openOSModal(osId=null,cid=null,itemVal=null){
 document.getElementById('os-form').reset();
 document.getElementById('os-client-select').innerHTML='<option value="">Selecione...</option>'+appState.clients.map(c=>'<option value="'+c.id+'">'+esc(c.name)+' ('+esc(c.phone)+')</option>').join('');
@@ -427,16 +408,15 @@ appState.orders.unshift({id:uid('os'),number:String(101+appState.orders.length),
 await saveState();closeModal('os-modal');renderAll();showToast('OS salva!');
 }
 function setOSFilter(f){activeOSFilter=f;renderAll();}
-
 function renderAll(){
 document.getElementById('kpi-active-os').textContent=appState.orders.filter(o=>['Na Fila','Em Lavagem'].includes(o.status)).length;
 document.getElementById('kpi-ready-os').textContent=appState.orders.filter(o=>o.status==='Pronto').length;
 document.getElementById('kpi-revenue-paid').textContent=brl(appState.orders.filter(o=>o.paymentStatus==='Pago').reduce((s,o)=>s+Number(o.price||0),0));
 document.getElementById('kpi-revenue-pending').textContent=brl(appState.orders.filter(o=>o.paymentStatus!=='Pago').reduce((s,o)=>s+Number(o.price||0),0));
 const a=isAdmin(),ords=appState.orders.filter(o=>activeOSFilter==='all'||(activeOSFilter==='active'&&['Na Fila','Em Lavagem'].includes(o.status))||o.status===activeOSFilter);
-document.getElementById('os-list-container').innerHTML=ords.length?ords.map(o=>'<div class="p-4 flex flex-wrap justify-between items-center gap-2 text-xs"><div><strong>#'+o.number+' '+esc(o.clientName)+'</strong><p class="text-slate-600">'+esc(o.itemLabel)+' • '+esc(o.service)+'</p></div><div class="flex items-center gap-2"><strong>'+brl(o.price)+'</strong><button type="button" onclick="openReceipt(''+o.id+'')" class="p-2 rounded bg-slate-100"><i class="fa-solid fa-print"></i></button>'+(a?'<button type="button" onclick="delOS(''+o.id+'')" class="p-2 text-red-500"><i class="fa-solid fa-trash-can"></i></button>':'')+'</div></div>').join(''):'<div class="p-6 text-center text-xs text-slate-500">Nenhuma OS.</div>';
+document.getElementById('os-list-container').innerHTML=ords.length?ords.map(o=>'<div class="p-4 flex flex-wrap justify-between items-center gap-2 text-xs"><div><strong>#'+o.number+' '+esc(o.clientName)+'</strong><p class="text-slate-600">'+esc(o.itemLabel)+' • '+esc(o.service)+'</p></div><div class="flex items-center gap-2"><strong>'+brl(o.price)+'</strong><button type="button" onclick="openReceipt(\''+o.id+'\')" class="p-2 rounded bg-slate-100"><i class="fa-solid fa-print"></i></button>'+(a?'<button type="button" onclick="delOS(\''+o.id+'\')" class="p-2 text-red-500"><i class="fa-solid fa-trash-can"></i></button>':'')+'</div></div>').join(''):'<div class="p-6 text-center text-xs text-slate-500">Nenhuma OS.</div>';
 const fq=norm(document.getElementById('clients-tab-filter')?.value||'');
-document.getElementById('clients-grid-container').innerHTML=appState.clients.filter(c=>!fq||norm(c.name).includes(fq)).map(c=>'<div class="bg-white rounded-2xl border p-4 space-y-2 text-xs"><div class="flex justify-between"><strong>'+esc(c.name)+'</strong>'+(a?'<button type="button" onclick="deleteClient(''+c.id+'')" class="text-red-500"><i class="fa-solid fa-trash-can"></i></button>':'')+'</div><p>'+esc(c.phone)+'</p><div class="flex gap-2"><button type="button" onclick="openClientItemsModal(''+c.id+'')" class="flex-1 py-2 rounded-xl bg-slate-900 text-white font-bold">Ficha & Fotos</button><button type="button" onclick="openOSModal(null,''+c.id+'')" class="px-3 py-2 rounded-xl bg-brand-600 text-white font-bold">+ OS</button></div></div>').join('');
+document.getElementById('clients-grid-container').innerHTML=appState.clients.filter(c=>!fq||norm(c.name).includes(fq)).map(c=>'<div class="bg-white rounded-2xl border p-4 space-y-2 text-xs"><div class="flex justify-between"><strong>'+esc(c.name)+'</strong>'+(a?'<button type="button" onclick="deleteClient(\''+c.id+'\')" class="text-red-500"><i class="fa-solid fa-trash-can"></i></button>':'')+'</div><p>'+esc(c.phone)+'</p><div class="flex gap-2"><button type="button" onclick="openClientItemsModal(\''+c.id+'\')" class="flex-1 py-2 rounded-xl bg-slate-900 text-white font-bold">Ficha & Fotos</button><button type="button" onclick="openOSModal(null,\''+c.id+'\')" class="px-3 py-2 rounded-xl bg-brand-600 text-white font-bold">+ OS</button></div></div>').join('');
 document.getElementById('car-models-price-list').innerHTML=appState.priceTable.carModels.map(m=>'<div class="py-2 flex justify-between text-xs"><span>'+esc(m.model)+'</span><strong>'+brl(m.price)+'</strong></div>').join('');
 const rIn=document.getElementById('rug-default-m2-input');if(rIn){rIn.readOnly=!a;rIn.value=Number(appState.priceTable.rugDefaultM2||25).toFixed(2).replace('.',',');}
 renderTeamTab();applyRoleUI();
@@ -444,10 +424,8 @@ renderTeamTab();applyRoleUI();
 async function delOS(id){if(!reqAdmin())return;appState.orders=appState.orders.filter(o=>o.id!==id);await saveState();renderAll();}
 async function saveCarModelPrice(e){e.preventDefault();if(!reqAdmin())return;appState.priceTable.carModels.unshift({id:uid('cm'),model:document.getElementById('car-price-model').value.trim(),category:document.getElementById('car-price-category').value.trim(),price:dec(document.getElementById('car-price-value').value)});await saveState();renderAll();}
 async function updateRugRatesConfig(){if(!reqAdmin())return;const v=dec(document.getElementById('rug-default-m2-input').value);if(v>0){appState.priceTable.rugDefaultM2=v;await saveState();showToast('Valor m² atualizado!');}}
-
 function openReceipt(id){const o=appState.orders.find(x=>x.id===id);if(!o)return;document.getElementById('print-area').innerHTML='<div class="text-center font-bold border-b pb-2 mb-2">LAVA RÁPIDO CIDAO<br>OS #'+o.number+'</div><div>Cliente: '+esc(o.clientName)+'<br>Item: '+esc(o.itemLabel)+'<br>Serviço: '+esc(o.service)+'<br><strong>TOTAL: '+brl(o.price)+'</strong></div>';document.getElementById('receipt-whatsapp-share-btn').href='https://wa.me/55'+digits(o.clientPhone)+'?text='+encodeURIComponent('OS #'+o.number+' - '+o.service+' - '+brl(o.price));openModal('receipt-modal');}
 function triggerPrint(m){const p=document.getElementById('print-area');p.className=m==='a4'?'print-a4 bg-white p-4 font-mono text-xs':'print-80mm bg-white p-4 font-mono text-xs';setTimeout(()=>window.print(),100);}
-
 function openCam(mode,type,idxOrId){cameraTargetContext={mode,type,idxOrId};capturedPhotoDataUrl=null;document.getElementById('camera-captured-preview').classList.add('hidden');document.getElementById('camera-live-controls').classList.remove('hidden');document.getElementById('camera-confirm-controls').classList.add('hidden');openModal('camera-modal');navigator.mediaDevices?.getUserMedia({video:{facingMode:'environment'}}).then(s=>{cameraStream=s;const v=document.getElementById('camera-video');v.srcObject=s;v.classList.remove('hidden');}).catch(()=>{});}
 function closeCameraModal(){if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null;}closeModal('camera-modal');}
 function capturePhotoFromVideo(){const v=document.getElementById('camera-video');if(!v.videoWidth)return;const c=document.createElement('canvas');c.width=800;c.height=Math.round(800*(v.videoHeight/v.videoWidth));c.getContext('2d').drawImage(v,0,0,c.width,c.height);capturedPhotoDataUrl=c.toDataURL('image/jpeg',0.72);showCamPrev(capturedPhotoDataUrl);}
@@ -455,20 +433,17 @@ function handleCameraFileUpload(e){const f=e.target.files?.[0];if(!f)return;cons
 function showCamPrev(u){const p=document.getElementById('camera-captured-preview');p.src=u;p.classList.remove('hidden');document.getElementById('camera-video').classList.add('hidden');document.getElementById('camera-live-controls').classList.add('hidden');document.getElementById('camera-confirm-controls').classList.remove('hidden');}
 function retakeCameraPhoto(){document.getElementById('camera-captured-preview').classList.add('hidden');document.getElementById('camera-live-controls').classList.remove('hidden');document.getElementById('camera-confirm-controls').classList.add('hidden');}
 async function confirmAndSaveCapturedPhoto(){if(!capturedPhotoDataUrl||!cameraTargetContext)return;const ph={id:uid('pho'),dataUrl:capturedPhotoDataUrl,caption:document.getElementById('camera-photo-caption').value};if(cameraTargetContext.mode==='draft'){const arr=cameraTargetContext.type==='vehicle'?draftFormVehicles:draftFormRugs;arr[cameraTargetContext.idxOrId]?.photos.push(ph);renderClientFormItems();}else{const c=appState.clients.find(x=>x.id===activeClientIdForItems),arr=cameraTargetContext.type==='vehicle'?c?.vehicles:c?.rugs,it=arr?.find(x=>x.id===cameraTargetContext.idxOrId);if(it){it.photos=it.photos||[];it.photos.push(ph);await saveState();openClientItemsModal(c.id);}}closeCameraModal();showToast('Foto salva!');}
-
 function triggerPlateOCRScan(t,i=null){ocrScanTargetContext={t,i};const f=document.getElementById('ocr-plate-file-input');f.value='';f.click();}
 async function handlePlateOCRFileChange(e){const f=e.target.files?.[0];if(!f)return;showToast('Lendo placa...');if(!ocrWorker)ocrWorker=await Tesseract.createWorker('eng');const r=await ocrWorker.recognize(f),m=(r?.data?.text||'').toUpperCase().replace(/[^A-Z0-9]/g,'').match(/[A-Z]{3}[0-9][A-Z0-9][0-9]{2}/);if(m){const pl=m[0];if(ocrScanTargetContext?.t==='draft'){const inp=document.getElementById('dv-p-'+ocrScanTargetContext.i);if(inp)inp.value=pl;}else if(ocrScanTargetContext?.t==='os_modal'){const inp=document.getElementById('os-client-search');if(inp){inp.value=pl;filterOSClientSelect(pl);}}else{const inp=document.getElementById('global-search-input');if(inp){inp.value=pl;handleGlobalSearch(pl);}}showToast('Placa: '+pl);}else showToast('Placa não identificada.','err');e.target.value='';}
-
 function exportBackupJSON(){if(!reqAdmin())return;const b=new Blob([JSON.stringify(appState)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='backup_cidao.json';a.click();}
 function importBackupJSON(e){if(!reqAdmin())return;const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=async ev=>{appState={...appState,...JSON.parse(ev.target.result)};await saveState(false);verifySession();renderAll();showToast('Backup restaurado!');};r.readAsText(f);}
 function openGoogleDriveModal(){if(!reqAdmin())return;document.getElementById('gdrive-script-url').value=gdriveConfig.scriptUrl||'';openModal('gdrive-modal');}
-function copyAppsScriptTemplate(){const s=`function doPost(e){var b=JSON.parse(e.postData.contents);var fs=DriveApp.getFoldersByName(b.folderName||'Lava_Rapido_Cidao_Backups');var f=fs.hasNext()?fs.next():DriveApp.createFolder(b.folderName||'Lava_Rapido_Cidao_Backups');var fl=f.getFilesByName(b.fileName||'lava_rapido_cidao_backup_automatico.json');if(fl.hasNext())fl.next().setContent(b.payload);else f.createFile(b.fileName||'lava_rapido_cidao_backup_automatico.json',b.payload,MimeType.PLAIN_TEXT);return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);}function doGet(e){var fs=DriveApp.getFoldersByName('Lava_Rapido_Cidao_Backups');if(!fs.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);var fl=fs.next().getFilesByName('lava_rapido_cidao_backup_automatico.json');if(!fl.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);return ContentService.createTextOutput(JSON.stringify({ok:true,backup:JSON.parse(fl.next().getBlob().getDataAsString())})).setMimeType(ContentService.MimeType.JSON);}`;navigator.clipboard?.writeText(s);showToast('Script copiado!');}
+function copyAppsScriptTemplate(){const s='function doPost(e){var b=JSON.parse(e.postData.contents);var fs=DriveApp.getFoldersByName(b.folderName||"Lava_Rapido_Cidao_Backups");var f=fs.hasNext()?fs.next():DriveApp.createFolder(b.folderName||"Lava_Rapido_Cidao_Backups");var fl=f.getFilesByName(b.fileName||"lava_rapido_cidao_backup_automatico.json");if(fl.hasNext())fl.next().setContent(b.payload);else f.createFile(b.fileName||"lava_rapido_cidao_backup_automatico.json",b.payload,MimeType.PLAIN_TEXT);return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);}function doGet(e){var fs=DriveApp.getFoldersByName("Lava_Rapido_Cidao_Backups");if(!fs.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);var fl=fs.next().getFilesByName("lava_rapido_cidao_backup_automatico.json");if(!fl.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);return ContentService.createTextOutput(JSON.stringify({ok:true,backup:JSON.parse(fl.next().getBlob().getDataAsString())})).setMimeType(ContentService.MimeType.JSON);}';navigator.clipboard?.writeText(s);showToast('Script copiado!');}
 async function testAndConnectAppsScript(){gdriveConfig.scriptUrl=document.getElementById('gdrive-script-url').value.trim();localStorage.setItem(GDRIVE_KEY,JSON.stringify(gdriveConfig));await syncBidirectionalGoogleDrive(false);closeModal('gdrive-modal');}
 function handleDrivePillClick(){if(isAdmin())openGoogleDriveModal();else if(gdriveConfig.scriptUrl)syncBidirectionalGoogleDrive(false);}
 async function syncBidirectionalGoogleDrive(silent=false){if(!gdriveConfig.scriptUrl)return;try{const g=await(await fetch(gdriveConfig.scriptUrl)).json();if(g?.ok&&g.backup&&Number(g.backup.revisionTimestamp||0)>Number(appState.revisionTimestamp||0)){appState={...appState,...g.backup};localStorage.setItem(STORAGE_KEY,JSON.stringify(appState));verifySession();renderAll();if(!silent)showToast('Atualizado do Drive!');return;}await fetch(gdriveConfig.scriptUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({folderName:'Lava_Rapido_Cidao_Backups',fileName:'lava_rapido_cidao_backup_automatico.json',payload:JSON.stringify(appState)})});document.getElementById('drive-status-pill-text').textContent='Drive: Ativo';if(!silent)showToast('Sincronizado!');}catch(e){if(!silent)showToast('Erro no Drive.','err');}}
 async function syncAccountFromDriveOnLogin(id){gdriveConfig.scriptUrl=document.getElementById(id).value.trim();localStorage.setItem(GDRIVE_KEY,JSON.stringify(gdriveConfig));await syncUsersFromDriveOnLockScreen();}
 async function syncUsersFromDriveOnLockScreen(){if(!gdriveConfig.scriptUrl)return;const g=await(await fetch(gdriveConfig.scriptUrl)).json();if(g?.ok&&g.backup){appState={...appState,...g.backup};localStorage.setItem(STORAGE_KEY,JSON.stringify(appState));showLockScreen();showToast('Contas atualizadas!');}}
-
 window.addEventListener('DOMContentLoaded',()=>{if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});loadState();if(gdriveConfig.scriptUrl)document.getElementById('drive-status-pill-text').textContent='Drive: Ativo';verifySession();renderAll();});
 </script>
 </body>
