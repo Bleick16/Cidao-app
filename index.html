@@ -14,7 +14,6 @@
     <link rel="apple-touch-icon" href="./icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -37,9 +36,7 @@
             #receipt-modal, #receipt-modal #print-area, #receipt-modal #print-area * { visibility: visible !important; }
             #receipt-modal { position: fixed !important; inset: 0 !important; background: #fff !important; display: block !important; padding: 0 !important; z-index: 99999 !important; }
             #receipt-modal .no-print { display: none !important; }
-            #print-area { margin: 0 !important; padding: 4mm !important; color: #000 !important; background: #fff !important; }
-            #print-area.print-80mm { width: 78mm !important; max-width: 78mm !important; font-size: 11px !important; }
-            #print-area.print-a4 { width: 100% !important; max-width: 190mm !important; padding: 12mm !important; font-size: 13px !important; }
+            #print-area { margin: 0 !important; padding: 4mm !important; color: #000 !important; background: #fff !important; width: 78mm !important; max-width: 78mm !important; font-size: 11px !important; }
         }
     </style>
 </head>
@@ -48,7 +45,7 @@
     <!-- TOASTS -->
     <div id="toast-container" class="fixed top-3 right-3 z-[99] flex flex-col gap-2 max-w-[92vw] sm:max-w-sm pointer-events-none"></div>
 
-    <!-- MODAL DE CONFIRMAÇÃO CUSTOMIZADO -->
+    <!-- MODAL DE CONFIRMAÇÃO -->
     <div id="custom-confirm-modal" style="display:none" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-[110] hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-5 space-y-4 border border-slate-200">
             <div>
@@ -62,7 +59,7 @@
         </div>
     </div>
 
-    <!-- TELA DE LOGIN / CONTROLE DE ACESSO -->
+    <!-- TELA DE LOGIN / PRIMEIRO ACESSO (VISÍVEL POR PADRÃO PARA NUNCA TRAVAR EM BRANCO) -->
     <div id="auth-lock-screen" class="fixed inset-0 bg-slate-950 z-[90] flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-800 my-auto">
             <div class="bg-gradient-to-r from-slate-900 to-brand-950 p-5 text-white text-center space-y-2">
@@ -71,7 +68,7 @@
                 <p class="text-xs text-sky-200">Controle de Acesso — Administrador & Equipe</p>
             </div>
 
-            <!-- Painel Primeiro Acesso (Visível por padrão para nunca travar em branco) -->
+            <!-- Painel Primeiro Acesso -->
             <div id="auth-setup-panel" class="p-5 space-y-4 text-xs">
                 <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
                     <p class="font-extrabold"><i class="fa-solid fa-shield-halved mr-1"></i>Primeiro Acesso — Criar Administrador</p>
@@ -126,7 +123,7 @@
 
     <!-- SHELL PRINCIPAL -->
     <div class="min-h-[100dvh] flex flex-col lg:flex-row">
-        <!-- Sidebar Desktop / Header Mobile -->
+        <!-- Sidebar Desktop / Topo Mobile -->
         <aside class="w-full lg:w-64 bg-slate-900 text-white lg:min-h-[100dvh] lg:sticky lg:top-0 flex-shrink-0 flex flex-col justify-between border-b lg:border-r border-slate-800">
             <div>
                 <div class="px-4 py-3 flex items-center justify-between gap-2 border-b border-slate-800">
@@ -143,11 +140,11 @@
                     </div>
                 </div>
                 <nav class="hidden lg:flex p-3 flex-col gap-1.5">
-                    <button type="button" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-brand-600 text-white"><i class="fa-solid fa-gauge-high w-4"></i><span>Painel & OS</span></button>
-                    <button type="button" onclick="switchTab('clients')" id="nav-clients" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-users w-4"></i><span>Clientes & Fotos</span></button>
-                    <button type="button" onclick="switchTab('prices')" id="nav-prices" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-tags w-4"></i><span>Tabela de Preços</span></button>
-                    <button type="button" onclick="switchTab('team')" id="nav-team" class="admin-only-el flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-user-shield w-4 text-amber-400"></i><span>Equipe / Acesso</span></button>
-                    <button type="button" onclick="switchTab('backup')" id="nav-backup" class="admin-only-el flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-brands fa-google-drive w-4 text-sky-400"></i><span>Drive & Backup</span></button>
+                    <button type="button" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-brand-600 text-white"><i class="fa-solid fa-gauge-high w-4"></i><span>Início (OS)</span></button>
+                    <button type="button" onclick="switchTab('clients')" id="nav-clients" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-users w-4"></i><span>Clientes</span></button>
+                    <button type="button" onclick="switchTab('prices')" id="nav-prices" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-tags w-4"></i><span>Preços</span></button>
+                    <button type="button" onclick="switchTab('team')" id="nav-team" class="admin-only-el flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-user-shield w-4 text-amber-400"></i><span>Equipe</span></button>
+                    <button type="button" onclick="switchTab('backup')" id="nav-backup" class="admin-only-el flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800"><i class="fa-brands fa-google-drive w-4 text-sky-400"></i><span>Backup / Drive</span></button>
                 </nav>
             </div>
             <div class="hidden lg:block p-4 border-t border-slate-800 space-y-2">
@@ -182,13 +179,12 @@
                 <button type="button" onclick="exportBackupJSON()" class="admin-only-el underline font-bold text-emerald-900">Backup JSON</button>
             </div>
 
-            <!-- Barra de Pré-Pesquisa Global -->
+            <!-- Barra de Busca Global -->
             <div class="bg-white rounded-2xl border border-slate-200 p-3 sm:p-4 shadow-sm flex flex-col md:flex-row gap-2.5">
                 <div class="relative flex-1" id="global-search-wrapper">
                     <div class="relative flex items-center">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-brand-500 text-sm pointer-events-none"></i>
-                        <input type="text" id="global-search-input" autocomplete="off" oninput="handleGlobalSearch(this.value)" placeholder="Pesquisar placa, cliente, CPF, telefone ou tapete..." class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand-500">
-                        <button type="button" onclick="triggerPlateOCRScan('global')" class="absolute right-2 px-2.5 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-extrabold flex items-center gap-1"><i class="fa-solid fa-camera-retro"></i> Placa</button>
+                        <input type="text" id="global-search-input" autocomplete="off" oninput="handleGlobalSearch(this.value)" placeholder="Pesquisar placa, cliente, CPF, telefone ou tapete..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand-500">
                     </div>
                     <div id="global-search-dropdown" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white rounded-2xl border border-slate-200 shadow-2xl z-40 max-h-96 overflow-y-auto divide-y divide-slate-100"></div>
                 </div>
@@ -197,15 +193,14 @@
                     <button type="button" onclick="openOSModal()" class="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-brand-600 text-white text-xs font-bold">+ Nova OS</button>
                 </div>
             </div>
-            <input type="file" id="ocr-plate-file-input" accept="image/*" capture="environment" onchange="handlePlateOCRFileChange(event)" class="hidden">
 
-            <!-- ABA 1: PAINEL & OS -->
+            <!-- ABA 1: INÍCIO (OS) -->
             <section id="tab-dashboard" class="space-y-4">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">Em Atendimento</span><p id="kpi-active-os" class="text-2xl font-extrabold text-slate-900 mt-1">0</p></div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">OS Hoje</span><p id="kpi-today-os" class="text-2xl font-extrabold text-brand-600 mt-1">0</p></div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">Em Andamento</span><p id="kpi-active-os" class="text-2xl font-extrabold text-slate-900 mt-1">0</p></div>
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">Prontos</span><p id="kpi-ready-os" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p></div>
-                    <div class="admin-only-el bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">Recebido</span><p id="kpi-revenue-paid" class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</p></div>
-                    <div class="admin-only-el bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">A Receber</span><p id="kpi-revenue-pending" class="text-xl font-extrabold text-amber-600 mt-1">R$ 0,00</p></div>
+                    <div class="admin-only-el bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs font-semibold text-slate-500">Faturamento Pago</span><p id="kpi-revenue-paid" class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</p></div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
@@ -214,7 +209,6 @@
                             <button type="button" id="filter-os-all" onclick="setOSFilter('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white">Todas</button>
                             <button type="button" id="filter-os-active" onclick="setOSFilter('active')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700">Andamento</button>
                             <button type="button" id="filter-os-Pronto" onclick="setOSFilter('Pronto')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700">Prontos</button>
-                            <button type="button" id="filter-os-Entregue" onclick="setOSFilter('Entregue')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700">Entregues</button>
                         </div>
                     </div>
                     <div id="os-list-container" class="divide-y divide-slate-100"></div>
@@ -226,17 +220,17 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-wrap justify-between items-center gap-2">
                     <h2 class="font-bold text-base text-slate-900">Clientes Cadastrados</h2>
                     <div class="flex gap-2 w-full sm:w-auto">
-                        <input type="text" id="clients-tab-filter" oninput="debouncedRenderClientsGrid()" placeholder="Filtrar nome, telefone, CPF ou placa..." class="flex-1 sm:w-64 px-3 py-2 rounded-xl border border-slate-300 text-xs outline-none">
+                        <input type="text" id="clients-tab-filter" oninput="debouncedRenderClientsGrid()" placeholder="Filtrar nome, telefone, CPF, placa ou tapete..." class="flex-1 sm:w-72 px-3 py-2 rounded-xl border border-slate-300 text-xs outline-none">
                         <button type="button" onclick="openNewClientModal()" class="px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold">+ Cliente</button>
                     </div>
                 </div>
                 <div id="clients-grid-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
             </section>
 
-            <!-- ABA 3: TABELA DE PREÇOS -->
+            <!-- ABA 3: PREÇOS -->
             <section id="tab-prices" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-                    <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-car text-brand-600 mr-1.5"></i>Preços por Modelo de Carro</h2>
+                    <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-car text-brand-600 mr-1.5"></i>Modelos de Carros & Preços</h2>
                     <form onsubmit="saveCarModelPrice(event)" class="admin-only-el p-3 rounded-xl bg-slate-50 border grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                         <input type="text" id="car-price-model" required placeholder="Modelo (Ex: Spin)" class="px-3 py-2 rounded-lg border bg-white">
                         <input type="text" id="car-price-category" placeholder="Categoria (Ex: SUV)" class="px-3 py-2 rounded-lg border bg-white">
@@ -245,6 +239,7 @@
                     </form>
                     <div id="car-models-price-list" class="divide-y divide-slate-100"></div>
                 </div>
+
                 <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
                     <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-rug text-indigo-600 mr-1.5"></i>Tapetes por Metro Quadrado (m²)</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-200">
@@ -262,39 +257,47 @@
                     </div>
                     <div id="rug-material-rates-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
                 </div>
+
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+                    <div>
+                        <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-spray-can-sparkles text-emerald-600 mr-1.5"></i>Adicionais & Serviços Extras</h2>
+                        <p class="text-xs text-slate-500">Altere quando quiser o valor da Cera, Brancol, Querosene, Higienização e Polimento — a mudança vale na hora para novas OS.</p>
+                    </div>
+                    <div id="wash-addons-price-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs"></div>
+                </div>
             </section>
 
             <!-- ABA 4: EQUIPE -->
-            <section id="tab-team" class="hidden bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-                <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-user-shield text-amber-500 mr-1.5"></i>Equipe & Controle de Acesso</h2>
-                <form onsubmit="adminCreateEmployeeAccount(event)" class="p-3.5 rounded-xl bg-slate-50 border grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-                    <input type="text" id="admin-new-emp-name" required placeholder="Nome do Funcionário" class="px-3 py-2 rounded-xl border bg-white">
-                    <input type="text" id="admin-new-emp-device" placeholder="Aparelho" class="px-3 py-2 rounded-xl border bg-white">
-                    <input type="text" inputmode="numeric" id="admin-new-emp-pin" required minlength="4" maxlength="6" placeholder="PIN (4-6 dígitos)" class="px-3 py-2 rounded-xl border bg-white font-mono">
-                    <button type="submit" class="py-2 rounded-xl bg-brand-600 text-white font-bold">+ Autorizar</button>
-                </form>
-                <div id="team-accounts-list" class="divide-y divide-slate-100"></div>
+            <section id="tab-team" class="hidden space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+                    <h2 class="font-bold text-base text-slate-900"><i class="fa-solid fa-user-shield text-amber-500 mr-1.5"></i>Equipe & Controle de Acesso</h2>
+                    <form onsubmit="adminCreateEmployeeAccount(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs bg-slate-50 p-3 rounded-xl border">
+                        <input type="text" id="admin-new-emp-name" required placeholder="Nome do Funcionário" class="px-3 py-2 rounded-lg border bg-white">
+                        <input type="text" id="admin-new-emp-device" placeholder="Aparelho (Ex: Moto G)" class="px-3 py-2 rounded-lg border bg-white">
+                        <input type="password" inputmode="numeric" id="admin-new-emp-pin" required minlength="4" maxlength="6" placeholder="PIN (4-6 dígitos)" class="px-3 py-2 rounded-lg border bg-white font-mono">
+                        <button type="submit" class="py-2 rounded-lg bg-slate-900 text-white font-bold">+ Autorizar</button>
+                    </form>
+                    <div id="team-accounts-list" class="divide-y divide-slate-100"></div>
+                </div>
             </section>
 
-            <!-- ABA 5: GOOGLE DRIVE & BACKUP -->
+            <!-- ABA 5: BACKUP / DRIVE -->
             <section id="tab-backup" class="hidden space-y-4">
-                <div class="bg-slate-900 text-white rounded-2xl p-5 flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                        <h3 class="font-extrabold text-base"><i class="fa-brands fa-google-drive text-sky-400 mr-1.5"></i>Sincronização Google Drive</h3>
-                        <p class="text-xs text-slate-300 mt-0.5">Compartilhe clientes, OS, preços e fotos entre celular e computador.</p>
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 text-xs">
+                    <h2 class="font-bold text-base text-slate-900"><i class="fa-brands fa-google-drive text-sky-600 mr-1.5"></i>Backup Local, CSV & Google Drive</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <button type="button" onclick="exportBackupJSON()" class="py-3 px-4 rounded-xl bg-emerald-600 text-white font-bold"><i class="fa-solid fa-download mr-1.5"></i>Exportar Backup JSON</button>
+                        <label class="py-3 px-4 rounded-xl bg-slate-900 text-white font-bold text-center cursor-pointer"><i class="fa-solid fa-upload mr-1.5"></i>Importar Backup JSON<input type="file" accept=".json,application/json" onchange="importBackupJSON(event)" class="hidden"></label>
+                        <button type="button" onclick="exportCSV()" class="py-3 px-4 rounded-xl bg-brand-600 text-white font-bold"><i class="fa-solid fa-file-csv mr-1.5"></i>Exportar Planilha CSV</button>
                     </div>
-                    <div class="flex gap-2">
-                        <button type="button" onclick="syncBidirectionalGoogleDrive(false)" class="px-4 py-2 rounded-xl bg-sky-500 text-slate-950 text-xs font-extrabold">Sincronizar</button>
-                        <button type="button" onclick="openGoogleDriveModal()" class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold">Configurar</button>
+                    <div class="p-4 rounded-2xl bg-sky-50 border border-sky-200 space-y-3">
+                        <p class="font-extrabold text-sky-950">Sincronização com Google Drive (Google Apps Script)</p>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="url" id="backup-drive-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2.5 rounded-xl border bg-white font-mono">
+                            <button type="button" onclick="saveDriveUrlFromTab()" class="px-4 py-2.5 rounded-xl bg-sky-600 text-white font-bold">Salvar & Sincronizar</button>
+                        </div>
+                        <button type="button" onclick="copyAppsScriptTemplate()" class="px-3.5 py-2 rounded-xl bg-slate-900 text-white font-bold"><i class="fa-solid fa-copy mr-1"></i>Copiar Código do Google Apps Script</button>
                     </div>
-                </div>
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 flex flex-wrap gap-2 text-xs">
-                    <button type="button" onclick="exportBackupJSON()" class="px-4 py-2.5 rounded-xl bg-brand-600 text-white font-bold">Baixar Backup JSON</button>
-                    <label class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-800 font-bold cursor-pointer">
-                        Restaurar JSON
-                        <input type="file" accept=".json,application/json" onchange="importBackupJSON(event)" class="hidden">
-                    </label>
-                    <button type="button" onclick="exportCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-bold">Exportar Planilha CSV</button>
                 </div>
             </section>
         </main>
@@ -316,7 +319,7 @@
                         <input type="tel" id="client-phone" required oninput="fmtPhone(this)" maxlength="15" placeholder="Telefone / WhatsApp *" class="sm:col-span-3 px-3 py-2.5 rounded-xl border">
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t">
-                        <span class="font-bold text-slate-700">Carros & Tapetes</span>
+                        <span class="font-bold text-slate-700">Veículos & Tapetes</span>
                         <div class="flex gap-2">
                             <button type="button" onclick="addDraftVeh()" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white font-bold">+ Carro</button>
                             <button type="button" onclick="addDraftRug()" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold">+ Tapete</button>
@@ -369,24 +372,55 @@
             </div>
             <form id="os-form" onsubmit="saveOS(event)" class="p-4 space-y-3 text-xs overflow-y-auto">
                 <input type="hidden" id="os-id">
-                <select id="os-client-select" required onchange="onOSClientChange(this.value)" class="w-full px-3 py-2.5 rounded-xl border bg-white"></select>
-                <select id="os-item-select" required onchange="onOSItemChange()" class="w-full px-3 py-2.5 rounded-xl border bg-white"></select>
-                <input type="text" id="os-service" required placeholder="Serviço (Ex: Lavagem Completa)" class="w-full px-3 py-2.5 rounded-xl border">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" inputmode="decimal" id="os-price" required placeholder="Valor R$" class="px-3 py-2.5 rounded-xl border font-extrabold">
-                    <select id="os-status" class="px-3 py-2.5 rounded-xl border bg-white">
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-700">Cliente *</label>
+                    <select id="os-client-select" onchange="onOSClientChange(this.value)" class="w-full px-3 py-2.5 rounded-xl border bg-white"></select>
+                    <input type="text" id="os-manual-client" placeholder="Ou digite o nome do cliente avulso..." class="hidden w-full px-3 py-2 rounded-xl border">
+                </div>
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-700">Veículo / Tapete</label>
+                    <select id="os-item-select" onchange="onOSItemChange()" class="w-full px-3 py-2.5 rounded-xl border bg-white"></select>
+                </div>
+
+                <!-- VALOR BASE + ADICIONAIS SEM DUPLICAÇÃO -->
+                <div class="grid grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Lavagem Base (R$)</label>
+                        <input type="text" inputmode="decimal" id="os-base-price" required oninput="recalcOSTotal()" placeholder="0,00" class="w-full px-3 py-2 rounded-xl border bg-white font-extrabold text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-emerald-800 mb-1">Total Final (R$)</label>
+                        <input type="text" id="os-total-display" readonly class="w-full px-3 py-2 rounded-xl border border-emerald-300 bg-emerald-50 font-extrabold text-emerald-800">
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-bold text-slate-700"><i class="fa-solid fa-plus-circle text-brand-600 mr-1"></i>Adicionais & Serviços Extras</span>
+                        <span id="os-addons-summary" class="text-[11px] font-bold text-emerald-700"></span>
+                    </div>
+                    <div id="os-addons-picker" class="flex flex-wrap gap-1.5"></div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Descrição do Serviço</label>
+                    <input type="text" id="os-service" required oninput="onOSServiceManualInput(this.value)" placeholder="Ex: Lavagem Fiat Uno" class="w-full px-3 py-2.5 rounded-xl border">
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <select id="os-status" class="px-2.5 py-2.5 rounded-xl border bg-white font-semibold">
                         <option value="Na Fila">Na Fila</option>
                         <option value="Em Lavagem">Em Lavagem</option>
                         <option value="Pronto">Pronto</option>
                         <option value="Entregue">Entregue</option>
                     </select>
-                    <select id="os-payment-method" class="px-3 py-2.5 rounded-xl border bg-white">
+                    <select id="os-payment-method" class="px-2.5 py-2.5 rounded-xl border bg-white font-semibold">
                         <option value="PIX">PIX</option>
                         <option value="Dinheiro">Dinheiro</option>
-                        <option value="Cartão de Débito">Cartão de Débito</option>
-                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                        <option value="Débito">Débito</option>
+                        <option value="Crédito">Crédito</option>
                     </select>
-                    <select id="os-payment-status" class="px-3 py-2.5 rounded-xl border bg-white">
+                    <select id="os-payment-status" class="px-2.5 py-2.5 rounded-xl border bg-white font-semibold">
                         <option value="Pendente">Pendente</option>
                         <option value="Pago">Pago</option>
                     </select>
@@ -399,22 +433,19 @@
         </div>
     </div>
 
-    <!-- MODAL: RECIBO / IMPRESSÃO -->
+    <!-- MODAL: RECIBO 80MM -->
     <div id="receipt-modal" class="fixed inset-0 bg-slate-950/80 z-[70] hidden flex items-center justify-center p-2 sm:p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
             <div class="no-print px-4 py-3 bg-slate-900 text-white flex justify-between items-center">
-                <h3 class="font-bold text-sm">Comprovante de Serviço</h3>
+                <h3 class="font-bold text-sm">Comprovante 80mm</h3>
                 <button type="button" onclick="closeModal('receipt-modal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 bg-slate-100 flex justify-center">
-                <div id="print-area" class="print-80mm bg-white p-4 rounded-xl border font-mono text-xs text-black w-full"></div>
+                <div id="print-area" class="bg-white p-4 rounded-xl border font-mono text-xs text-black w-full"></div>
             </div>
             <div class="no-print px-4 py-3 bg-white border-t flex justify-between items-center">
                 <a id="receipt-whatsapp-share-btn" href="#" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold"><i class="fa-brands fa-whatsapp mr-1"></i>WhatsApp</a>
-                <div class="flex gap-2">
-                    <button type="button" onclick="triggerPrint('80mm')" class="px-3 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold">80mm</button>
-                    <button type="button" onclick="triggerPrint('a4')" class="px-3 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold">A4</button>
-                </div>
+                <button type="button" onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold"><i class="fa-solid fa-print mr-1"></i>Imprimir 80mm</button>
             </div>
         </div>
     </div>
@@ -424,7 +455,7 @@
         <div class="bg-slate-900 text-white rounded-2xl max-w-md w-full p-4 space-y-3 border border-slate-700 text-xs">
             <div class="flex justify-between items-center">
                 <h3 class="font-bold text-sm">Foto de Carro / Placa / Tapete</h3>
-                <button type="button" onclick="closeCameraModal()"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button type="button" onclick="closeModal('camera-modal')"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <input type="file" id="camera-native-input" accept="image/*" capture="environment" onchange="handleCamFile(event)" class="hidden">
             <input type="file" id="camera-gallery-input" accept="image/*" onchange="handleCamFile(event)" class="hidden">
@@ -438,7 +469,7 @@
         </div>
     </div>
 
-    <!-- MODAL: VISUALIZAR FOTO AMPLIADA -->
+    <!-- MODAL: LIGHTBOX FOTO -->
     <div id="photo-view-modal" class="fixed inset-0 bg-slate-950/95 z-[85] hidden flex items-center justify-center p-3">
         <div class="bg-slate-900 text-white rounded-2xl max-w-2xl w-full overflow-hidden border border-slate-700">
             <div class="px-4 py-3 flex justify-between items-center border-b border-slate-800">
@@ -452,7 +483,7 @@
         </div>
     </div>
 
-    <!-- MODAL: CONFIGURAÇÃO GOOGLE DRIVE -->
+    <!-- MODAL: GOOGLE DRIVE -->
     <div id="gdrive-modal" class="fixed inset-0 bg-slate-950/80 z-[80] hidden flex items-center justify-center p-3">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 space-y-3 text-xs">
             <div class="flex justify-between items-center">
@@ -472,13 +503,24 @@
         const SESSION_KEY = 'lava_rapido_cidao_active_session_v2';
         const GDRIVE_KEY = 'lava_rapido_cidao_gdrive_cfg_v3';
         const DEFAULT_RUG_MATS = ['Sintético / Polipropileno', 'Shaggy (Peludo)', 'Persa / Oriental', 'Algodão / Tear', 'Sisal / Fibra Natural'];
+        const DEFAULT_WASH_ADDONS = [
+            { id: 'cera', name: 'Cera', label: 'Lavagem com Cera', price: 5 },
+            { id: 'brancol', name: 'Brancol', label: 'Lavagem com Brancol', price: 10 },
+            { id: 'querosene', name: 'Querosene', label: 'Lavagem com Querosene', price: 10 },
+            { id: 'higienizacao', name: 'Higienização', label: 'Higienização', price: 150 },
+            { id: 'polimento', name: 'Polimento', label: 'Polimento', price: 180 }
+        ];
 
-        function uid(p = 'id') { return p + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7); }
-        function esc(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
-        function norm(s) { return String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); }
-        function digits(s) { return String(s ?? '').replace(/\D/g, ''); }
-        function dec(v) { const n = parseFloat(String(v ?? '').replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(?:,|$))/g, '').replace(',', '.')); return isNaN(n) ? 0 : n; }
-        function brl(v) { return (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+        // --- Funções Auxiliares Seguras ---
+        function esc(str) { return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+        function norm(str) { return String(str ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
+        function digits(str) { return String(str ?? '').replace(/\D/g, ''); }
+        function dec(val) { const n = parseFloat(String(val ?? '0').replace(/[^\d,.-]/g, '').replace(',', '.')); return Number.isFinite(n) ? n : 0; }
+        function brl(val) { return 'R$ ' + Number(val || 0).toFixed(2).replace('.', ','); }
+        function uid(prefix) { return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6); }
+        function isAdmin() { return session?.role === 'admin'; }
+        function reqAdmin() { if (isAdmin()) return true; showToast('Ação restrita ao Administrador.', 'error'); return false; }
+
         function fallbackLogoUrl() {
             const c = document.createElement('canvas'); c.width = 192; c.height = 192;
             const x = c.getContext('2d'); x.fillStyle = '#071a33'; x.fillRect(0, 0, 192, 192);
@@ -522,6 +564,7 @@
         }
         function closeConfirmModal() { closeModal('custom-confirm-modal'); }
 
+        // --- Estado Global ---
         let appState = {
             clients: [],
             orders: [],
@@ -532,17 +575,28 @@
                     { id: 'cm3', model: 'Toyota Hilux', category: 'Picape', price: 90 }
                 ],
                 rugDefaultM2: 25,
-                rugMaterialRates: { 'Sintético / Polipropileno': 25, 'Shaggy (Peludo)': 32, 'Persa / Oriental': 38, 'Algodão / Tear': 28, 'Sisal / Fibra Natural': 35 }
+                rugMaterialRates: { 'Sintético / Polipropileno': 25, 'Shaggy (Peludo)': 32, 'Persa / Oriental': 38, 'Algodão / Tear': 28, 'Sisal / Fibra Natural': 35 },
+                washAddons: DEFAULT_WASH_ADDONS.map(a => ({ ...a }))
             },
             accessControl: { admin: null, employees: [] },
             revisionTimestamp: 0
         };
         let session = null, activeOSFilter = 'all', activeClientId = null;
         let gdriveConfig = { scriptUrl: '', autoEnabled: true, pendingPush: false };
-        let draftVehs = [], draftRugs = [], camCtx = null, camDataUrl = '', ocrCtx = null, ocrWorker = null;
+        let draftVehs = [], draftRugs = [], camCtx = null, camDataUrl = '';
+        let selectedOSAddons = [], osBaseService = '';
 
-        function isAdmin() { return Boolean(session && session.role === 'admin'); }
-        function reqAdmin() { if (isAdmin()) return true; showToast('Somente o Administrador pode fazer isso.', 'error'); return false; }
+        function ensureWashAddons() {
+            appState.priceTable = appState.priceTable || {};
+            if (!Array.isArray(appState.priceTable.washAddons) || !appState.priceTable.washAddons.length) {
+                appState.priceTable.washAddons = DEFAULT_WASH_ADDONS.map(a => ({ ...a }));
+            } else {
+                DEFAULT_WASH_ADDONS.forEach(def => {
+                    if (!appState.priceTable.washAddons.some(x => x.id === def.id)) appState.priceTable.washAddons.push({ ...def });
+                });
+            }
+            return appState.priceTable.washAddons;
+        }
 
         function loadState() {
             try {
@@ -552,10 +606,8 @@
                     appState = { ...appState, ...p, priceTable: { ...appState.priceTable, ...(p.priceTable || {}) }, accessControl: p.accessControl || { admin: null, employees: [] } };
                 }
             } catch (e) {}
-            try {
-                const g = localStorage.getItem(GDRIVE_KEY);
-                if (g) gdriveConfig = { ...gdriveConfig, ...JSON.parse(g) };
-            } catch (e) {}
+            ensureWashAddons();
+            try { const g = localStorage.getItem(GDRIVE_KEY); if (g) gdriveConfig = { ...gdriveConfig, ...JSON.parse(g) }; } catch (e) {}
             try { session = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch (e) {}
         }
 
@@ -592,6 +644,8 @@
                 document.getElementById('session-user-label').textContent = session.name + ' (' + role + ')';
                 document.getElementById('active-user-role-subtitle').textContent = role + ': ' + session.name;
             }
+            const bUrl = document.getElementById('backup-drive-url-input');
+            if (bUrl && gdriveConfig.scriptUrl) bUrl.value = gdriveConfig.scriptUrl;
             updateNetworkPillUI();
         }
 
@@ -606,6 +660,7 @@
             });
         }
 
+        // --- Autenticação ---
         function showAuthScreen() {
             const hasAdm = Boolean(appState.accessControl.admin);
             document.getElementById('auth-setup-panel').classList.toggle('hidden', hasAdm);
@@ -637,8 +692,7 @@
             localStorage.setItem(SESSION_KEY, JSON.stringify(session));
             await saveState();
             document.getElementById('auth-lock-screen').classList.add('hidden');
-            applyRoleUI(); renderAll();
-            showToast('Bem-vindo, ' + name + '!');
+            applyRoleUI(); renderAll(); showToast('Bem-vindo, ' + name + '!');
         }
         async function handleUserLogin(e) {
             e.preventDefault();
@@ -664,8 +718,7 @@
             const pin = document.getElementById('req-emp-pin').value.trim();
             if (!name || pin.length < 4) return;
             appState.accessControl.employees.push({ id: uid('emp'), name, device, pinHash: await hashPin(pin), status: 'pending' });
-            await saveState();
-            switchAuthSubPanel('login'); showAuthScreen();
+            await saveState(); switchAuthSubPanel('login'); showAuthScreen();
             showToast('Solicitação enviada ao Administrador!');
         }
         function verifySession() {
@@ -679,14 +732,13 @@
         }
         function logoutCurrentSession() { session = null; localStorage.removeItem(SESSION_KEY); showAuthScreen(); }
 
+        // --- Busca Global ---
         function handleGlobalSearch(q) {
             const d = document.getElementById('global-search-dropdown');
             const nq = norm(q), dq = digits(q);
             if (!nq) { d.classList.add('hidden'); return; }
             const matches = appState.clients.filter(c =>
-                norm(c.name).includes(nq) ||
-                (dq.length >= 2 && digits(c.phone).includes(dq)) ||
-                (dq.length >= 2 && digits(c.cpf).includes(dq)) ||
+                norm(c.name).includes(nq) || (dq.length >= 2 && digits(c.phone).includes(dq)) || (dq.length >= 2 && digits(c.cpf).includes(dq)) ||
                 (c.vehicles || []).some(v => norm(v.plate).includes(nq) || norm(v.model).includes(nq)) ||
                 (c.rugs || []).some(r => norm(r.tag).includes(nq))
             );
@@ -700,6 +752,7 @@
             if (w && d && !w.contains(e.target)) d.classList.add('hidden');
         });
 
+        // --- Clientes, Veículos & Tapetes ---
         function openNewClientModal(cid = null) {
             if (cid && !reqAdmin()) return;
             document.getElementById('client-form').reset();
@@ -714,8 +767,7 @@
                 draftVehs = JSON.parse(JSON.stringify(c.vehicles || []));
                 draftRugs = JSON.parse(JSON.stringify(c.rugs || []));
             }
-            renderClientFormItems();
-            openModal('client-modal');
+            renderClientFormItems(); openModal('client-modal');
         }
         function syncDrafts() {
             draftVehs.forEach((v, i) => {
@@ -734,7 +786,7 @@
         function addDraftRug() { syncDrafts(); draftRugs.push({ id: uid('rug'), type: DEFAULT_RUG_MATS[0], tag: 'TAP-' + (draftRugs.length + 1), width: 2, length: 2.5, area: 5, photos: [] }); renderClientFormItems(); }
         function renderClientFormItems() {
             document.getElementById('client-form-vehicles-container').innerHTML = draftVehs.map((v, i) =>
-                '<div class="p-3 rounded-xl border bg-slate-50 space-y-2"><div class="grid grid-cols-2 gap-2"><input id="dv-m-' + i + '" value="' + esc(v.model) + '" placeholder="Modelo (Ex: Spin)" class="px-2.5 py-2 rounded-lg border bg-white"><div class="flex gap-1"><input id="dv-p-' + i + '" value="' + esc(v.plate) + '" oninput="fmtPlate(this)" maxlength="8" placeholder="Placa" class="w-full px-2.5 py-2 rounded-lg border bg-white font-mono uppercase"><button type="button" data-idx="' + i + '" onclick="triggerPlateOCRScan(\'draft\',Number(this.dataset.idx))" class="px-2 rounded-lg bg-amber-100 text-amber-900 font-bold"><i class="fa-solid fa-camera-retro"></i></button></div></div><button type="button" data-idx="' + i + '" onclick="openCam(\'draft\',\'vehicle\',Number(this.dataset.idx))" class="px-2.5 py-1 rounded-lg bg-brand-600 text-white font-bold">Foto (' + (v.photos?.length || 0) + ')</button></div>'
+                '<div class="p-3 rounded-xl border bg-slate-50 space-y-2"><div class="grid grid-cols-2 gap-2"><input id="dv-m-' + i + '" value="' + esc(v.model) + '" placeholder="Modelo (Ex: Spin)" class="px-2.5 py-2 rounded-lg border bg-white"><input id="dv-p-' + i + '" value="' + esc(v.plate) + '" oninput="fmtPlate(this)" maxlength="8" placeholder="Placa" class="w-full px-2.5 py-2 rounded-lg border bg-white font-mono uppercase"></div><button type="button" data-idx="' + i + '" onclick="openCam(\'draft\',\'vehicle\',Number(this.dataset.idx))" class="px-2.5 py-1 rounded-lg bg-brand-600 text-white font-bold">Foto (' + (v.photos?.length || 0) + ')</button></div>'
             ).join('');
             document.getElementById('client-form-rugs-container').innerHTML = draftRugs.map((r, i) =>
                 '<div class="p-3 rounded-xl border border-indigo-200 bg-indigo-50/40 space-y-2"><div class="grid grid-cols-3 gap-2"><input id="dr-t-' + i + '" value="' + esc(r.tag) + '" placeholder="Etiqueta" class="px-2 py-2 rounded-lg border bg-white font-mono uppercase"><input id="dr-w-' + i + '" value="' + String(r.width || '').replace('.', ',') + '" placeholder="Larg (m)" class="px-2 py-2 rounded-lg border bg-white"><input id="dr-l-' + i + '" value="' + String(r.length || '').replace('.', ',') + '" placeholder="Comp (m)" class="px-2 py-2 rounded-lg border bg-white"></div><select id="dr-mat-' + i + '" class="w-full px-2 py-1.5 rounded-lg border bg-white">' + DEFAULT_RUG_MATS.map(m => '<option value="' + esc(m) + '" ' + (r.type === m ? 'selected' : '') + '>' + esc(m) + '</option>').join('') + '</select><button type="button" data-idx="' + i + '" onclick="openCam(\'draft\',\'rug\',Number(this.dataset.idx))" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold">Foto (' + (r.photos?.length || 0) + ')</button></div>'
@@ -805,30 +857,101 @@
             openModal('photo-view-modal');
         }
 
+        // --- Ordens de Serviço (Cálculo Limpo: Total = basePrice + sum(addons)) ---
+        function getSelectedAddonsSum() {
+            const addons = ensureWashAddons();
+            return selectedOSAddons.reduce((sum, id) => {
+                const found = addons.find(a => a.id === id);
+                return sum + (found ? Number(found.price) || 0 : 0);
+            }, 0);
+        }
+        function stripAddonSuffixes(text) {
+            let clean = String(text || '');
+            ensureWashAddons().forEach(a => {
+                clean = clean.replace(' + ' + a.name, '').replace(' + ' + a.label, '');
+            });
+            return clean.trim();
+        }
+        function recalcOSTotal() {
+            const base = Math.max(0, dec(document.getElementById('os-base-price').value));
+            const addonsSum = getSelectedAddonsSum();
+            const total = +(base + addonsSum).toFixed(2);
+            document.getElementById('os-total-display').value = brl(total);
+            const summaryEl = document.getElementById('os-addons-summary');
+            if (summaryEl) summaryEl.textContent = addonsSum > 0 ? ('Extras: +' + brl(addonsSum)) : '';
+            const chosen = ensureWashAddons().filter(a => selectedOSAddons.includes(a.id));
+            const baseName = osBaseService || 'Lavagem';
+            const suffix = chosen.length ? ' + ' + chosen.map(a => a.name).join(' + ') : '';
+            document.getElementById('os-service').value = baseName + suffix;
+        }
+        function renderOSAddonsPicker() {
+            const container = document.getElementById('os-addons-picker'); if (!container) return;
+            container.innerHTML = ensureWashAddons().map(a => {
+                const active = selectedOSAddons.includes(a.id);
+                const cls = active ? 'bg-brand-600 text-white border-brand-700 shadow-sm' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100';
+                return '<button type="button" data-aid="' + esc(a.id) + '" onclick="toggleOSAddon(this.dataset.aid)" class="px-2.5 py-1.5 rounded-xl border font-bold text-[11px] flex items-center gap-1.5 transition ' + cls + '">' + (active ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-plus text-slate-400"></i>') + '<span>' + esc(a.label) + '</span><span class="opacity-90">(+' + brl(a.price) + ')</span></button>';
+            }).join('');
+        }
+        function toggleOSAddon(addonId) {
+            const idx = selectedOSAddons.indexOf(addonId);
+            if (idx === -1) selectedOSAddons.push(addonId);
+            else selectedOSAddons.splice(idx, 1);
+            renderOSAddonsPicker();
+            recalcOSTotal();
+        }
+        function onOSServiceManualInput(val) { osBaseService = stripAddonSuffixes(val); }
+
         function openOSModal(osId = null, cid = null, itemVal = null) {
             document.getElementById('os-form').reset();
             document.getElementById('os-id').value = '';
-            document.getElementById('os-client-select').innerHTML = '<option value="">Selecione o cliente...</option>' + appState.clients.map(c => '<option value="' + esc(c.id) + '">' + esc(c.name) + ' — ' + esc(c.phone) + '</option>').join('');
+            selectedOSAddons = [];
+            osBaseService = 'Lavagem';
+            const sel = document.getElementById('os-client-select');
+            sel.innerHTML = '<option value="__manual__">✍️ Cliente Avulso (Digitar nome)</option>' + appState.clients.map(c => '<option value="' + esc(c.id) + '">' + esc(c.name) + ' — ' + esc(c.phone) + '</option>').join('');
+            document.getElementById('os-manual-client').classList.add('hidden');
+
             if (osId) {
                 const o = appState.orders.find(x => x.id === osId); if (!o) return;
                 document.getElementById('os-id').value = o.id;
-                document.getElementById('os-client-select').value = o.clientId;
-                onOSClientChange(o.clientId, o.itemValue, false);
-                document.getElementById('os-service').value = o.service;
-                document.getElementById('os-price').value = Number(o.price || 0).toFixed(2).replace('.', ',');
+                if (o.clientId && appState.clients.some(c => c.id === o.clientId)) {
+                    sel.value = o.clientId;
+                    onOSClientChange(o.clientId, o.itemValue, false);
+                } else {
+                    sel.value = '__manual__';
+                    onOSClientChange('__manual__', null, false);
+                    document.getElementById('os-manual-client').value = o.clientName || '';
+                }
+                selectedOSAddons = Array.isArray(o.addons) ? [...o.addons] : [];
+                const restoredBase = Number.isFinite(Number(o.basePrice)) ? Number(o.basePrice) : Math.max(0, +(dec(o.price) - getSelectedAddonsSum()).toFixed(2));
+                osBaseService = stripAddonSuffixes(o.service || 'Lavagem');
+                document.getElementById('os-base-price').value = restoredBase.toFixed(2).replace('.', ',');
                 document.getElementById('os-status').value = o.status;
-                document.getElementById('os-payment-method').value = o.paymentMethod;
-                document.getElementById('os-payment-status').value = o.paymentStatus;
+                document.getElementById('os-payment-method').value = o.paymentMethod || 'PIX';
+                document.getElementById('os-payment-status').value = o.paymentStatus || 'Pendente';
             } else if (cid) {
-                document.getElementById('os-client-select').value = cid;
+                sel.value = cid;
                 onOSClientChange(cid, itemVal, true);
+            } else {
+                sel.value = appState.clients.length ? appState.clients[0].id : '__manual__';
+                onOSClientChange(sel.value, null, true);
             }
+            renderOSAddonsPicker();
+            recalcOSTotal();
             openModal('os-modal');
         }
+
         function onOSClientChange(cid, itemVal = null, auto = true) {
-            const c = appState.clients.find(x => x.id === cid);
+            const manualEl = document.getElementById('os-manual-client');
             const sel = document.getElementById('os-item-select');
-            if (!c) { sel.innerHTML = ''; return; }
+            if (cid === '__manual__') {
+                manualEl.classList.remove('hidden');
+                sel.innerHTML = '<option value="general:avulso">✨ Serviço Avulso</option>';
+                if (auto) { document.getElementById('os-base-price').value = '0,00'; osBaseService = 'Lavagem'; recalcOSTotal(); }
+                return;
+            }
+            manualEl.classList.add('hidden');
+            const c = appState.clients.find(x => x.id === cid);
+            if (!c) { sel.innerHTML = '<option value="general:avulso">✨ Serviço Avulso</option>'; return; }
             const opts = [];
             (c.vehicles || []).forEach(v => opts.push('<option value="vehicle:' + esc(v.id) + '" data-model="' + esc(v.model) + '">🚗 ' + esc(v.plate) + ' - ' + esc(v.model) + '</option>'));
             (c.rugs || []).forEach(r => opts.push('<option value="rug:' + esc(r.id) + '" data-area="' + Number(r.area || 0) + '" data-mat="' + esc(r.type || '') + '">🧶 Tapete #' + esc(r.tag) + ' (' + Number(r.area || 0).toFixed(2) + ' m²)</option>'));
@@ -837,29 +960,42 @@
             if (itemVal) sel.value = itemVal;
             if (auto) onOSItemChange();
         }
+
         function onOSItemChange() {
             const sel = document.getElementById('os-item-select'), opt = sel.options[sel.selectedIndex]; if (!opt) return;
+            let base = 0;
             if (opt.dataset.area) {
                 const rate = Number(appState.priceTable.rugMaterialRates?.[opt.dataset.mat] || appState.priceTable.rugDefaultM2 || 25);
-                document.getElementById('os-price').value = (parseFloat(opt.dataset.area) * rate).toFixed(2).replace('.', ',');
-                document.getElementById('os-service').value = 'Lavagem Tapete (' + opt.dataset.area + ' m²)';
+                base = +(parseFloat(opt.dataset.area) * rate).toFixed(2);
+                osBaseService = 'Lavagem Tapete (' + opt.dataset.area + ' m²)';
             } else if (opt.dataset.model) {
                 const m = appState.priceTable.carModels.find(x => norm(opt.dataset.model).includes(norm(x.model)));
-                if (m) document.getElementById('os-price').value = Number(m.price).toFixed(2).replace('.', ',');
-                document.getElementById('os-service').value = 'Lavagem ' + opt.dataset.model;
+                base = m ? Number(m.price) : 0;
+                osBaseService = 'Lavagem ' + opt.dataset.model;
+            } else {
+                osBaseService = 'Lavagem';
             }
+            document.getElementById('os-base-price').value = base.toFixed(2).replace('.', ',');
+            recalcOSTotal();
         }
+
         async function saveOS(e) {
             e.preventDefault();
             const osId = document.getElementById('os-id').value;
             const cid = document.getElementById('os-client-select').value;
-            const c = appState.clients.find(x => x.id === cid); if (!c) return;
+            const c = cid !== '__manual__' ? appState.clients.find(x => x.id === cid) : null;
+            const clientName = c ? c.name : (document.getElementById('os-manual-client').value.trim() || 'Cliente Avulso');
+            const clientPhone = c ? c.phone : '';
             const itemValue = document.getElementById('os-item-select').value;
             const itemLabel = document.getElementById('os-item-select').selectedOptions[0]?.textContent || 'Serviço';
+            const basePrice = Math.max(0, +dec(document.getElementById('os-base-price').value).toFixed(2));
+            const total = +(basePrice + getSelectedAddonsSum()).toFixed(2);
             const data = {
-                clientId: c.id, clientName: c.name, clientPhone: c.phone, itemValue, itemLabel,
+                clientId: c ? c.id : '', clientName, clientPhone, itemValue, itemLabel,
                 service: document.getElementById('os-service').value.trim(),
-                price: dec(document.getElementById('os-price').value),
+                basePrice,
+                addons: [...selectedOSAddons],
+                price: total,
                 status: document.getElementById('os-status').value,
                 paymentMethod: document.getElementById('os-payment-method').value,
                 paymentStatus: document.getElementById('os-payment-status').value
@@ -871,14 +1007,15 @@
                 const num = appState.orders.reduce((mx, o) => Math.max(mx, parseInt(o.number, 10) || 100), 100) + 1;
                 appState.orders.unshift({ id: uid('os'), number: String(num), ...data, createdAt: new Date().toISOString() });
             }
-            await saveState(); closeModal('os-modal'); renderAll(); showToast('OS salva!');
+            await saveState(); closeModal('os-modal'); renderAll(); showToast('OS salva com sucesso!');
         }
+
         async function updateOSStatusQuick(id, st) { const o = appState.orders.find(x => x.id === id); if (o) { o.status = st; await saveState(); renderAll(); } }
         async function toggleOSPayQuick(id) { if (!reqAdmin()) return; const o = appState.orders.find(x => x.id === id); if (o) { o.paymentStatus = o.paymentStatus === 'Pago' ? 'Pendente' : 'Pago'; await saveState(); renderAll(); } }
         function delOS(id) { if (!reqAdmin()) return; openConfirm('Excluir OS', 'Deseja apagar esta ordem de serviço?', async () => { appState.orders = appState.orders.filter(o => o.id !== id); await saveState(); renderAll(); }); }
         function setOSFilter(f) {
             activeOSFilter = f;
-            ['all', 'active', 'Pronto', 'Entregue'].forEach(k => {
+            ['all', 'active', 'Pronto'].forEach(k => {
                 const b = document.getElementById('filter-os-' + k);
                 if (b) b.className = k === f ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white' : 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700';
             });
@@ -890,18 +1027,13 @@
             return 'https://wa.me/55' + ph + '?text=' + encodeURIComponent(msg);
         }
 
+        // --- Recibo & Câmera ---
         function openReceiptModal(id) {
             const o = appState.orders.find(x => x.id === id); if (!o) return;
-            document.getElementById('print-area').innerHTML = '<div class="text-center border-b border-dashed border-black pb-2 mb-2"><strong>LAVA RÁPIDO CIDÃO</strong><div>OS #' + esc(o.number) + '</div></div><div><strong>Cliente:</strong> ' + esc(o.clientName) + '</div><div><strong>Item:</strong> ' + esc(o.itemLabel) + '</div><div><strong>Serviço:</strong> ' + esc(o.service) + '</div><div class="font-extrabold pt-2">TOTAL: ' + brl(o.price) + ' (' + esc(o.paymentStatus) + ')</div>';
+            document.getElementById('print-area').innerHTML = '<div class="text-center border-b border-dashed border-black pb-2 mb-2"><strong>LAVA RÁPIDO CIDÃO</strong><div>OS #' + esc(o.number) + '</div></div><div><strong>Cliente:</strong> ' + esc(o.clientName) + '</div><div><strong>Item:</strong> ' + esc(o.itemLabel) + '</div><div><strong>Serviço:</strong> ' + esc(o.service) + '</div><div class="font-extrabold pt-2 border-t border-dashed border-black mt-2">TOTAL: ' + brl(o.price) + ' (' + esc(o.paymentStatus) + ')</div>';
             const waText = 'COMPROVANTE LAVA RÁPIDO CIDÃO\nOS #' + o.number + '\nCliente: ' + o.clientName + '\nServiço: ' + o.service + '\nValor: ' + brl(o.price);
             document.getElementById('receipt-whatsapp-share-btn').href = 'https://wa.me/55' + digits(o.clientPhone) + '?text=' + encodeURIComponent(waText);
             openModal('receipt-modal');
-        }
-        function triggerPrint(m) {
-            const p = document.getElementById('print-area');
-            p.classList.remove('print-80mm', 'print-a4');
-            p.classList.add(m === 'a4' ? 'print-a4' : 'print-80mm');
-            setTimeout(() => window.print(), 100);
         }
 
         function openCam(mode, type, ref) {
@@ -911,7 +1043,6 @@
             document.getElementById('camera-caption').value = '';
             openModal('camera-modal');
         }
-        function closeCameraModal() { closeModal('camera-modal'); }
         function handleCamFile(e) {
             const f = e.target.files?.[0]; if (!f) return;
             const url = URL.createObjectURL(f), img = new Image();
@@ -938,34 +1069,12 @@
                 const item = (camCtx.type === 'vehicle' ? c?.vehicles : c?.rugs)?.find(i => i.id === camCtx.ref);
                 if (item) { item.photos = item.photos || []; item.photos.push(pho); await saveState(); openClientItemsModal(activeClientId); }
             }
-            closeCameraModal(); showToast('Foto salva!');
+            closeModal('camera-modal'); showToast('Foto salva!');
         }
 
-        function triggerPlateOCRScan(target, idx = null) {
-            ocrCtx = { target, idx };
-            const f = document.getElementById('ocr-plate-file-input'); if (f) { f.value = ''; f.click(); }
-        }
-        async function handlePlateOCRFileChange(e) {
-            const f = e.target.files?.[0]; if (!f) return;
-            showToast('Lendo placa...', 'info');
-            const url = URL.createObjectURL(f), img = new Image();
-            img.onload = async () => {
-                URL.revokeObjectURL(url);
-                try {
-                    if (!ocrWorker) { ocrWorker = await window.Tesseract.createWorker('eng'); await ocrWorker.setParameters({ tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' }); }
-                    const res = await ocrWorker.recognize(img);
-                    const m = (res?.data?.text || '').toUpperCase().replace(/[^A-Z0-9]/g, '').match(/[A-Z]{3}[0-9][A-Z0-9][0-9]{2}/);
-                    if (m) {
-                        const plate = m[0];
-                        if (ocrCtx?.target === 'draft') { const inp = document.getElementById('dv-p-' + ocrCtx.idx); if (inp) inp.value = plate; }
-                        else { const inp = document.getElementById('global-search-input'); if (inp) { inp.value = plate; handleGlobalSearch(plate); } }
-                        showToast('Placa lida: ' + plate);
-                    } else showToast('Placa não identificada.', 'info');
-                } catch (err) { showToast('Erro ao ler placa.', 'error'); }
-            };
-            img.src = url; e.target.value = '';
-        }
-
+        // --- Renderização Principal ---
+        let clientsFilterTimer = null;
+        function debouncedRenderClientsGrid() { clearTimeout(clientsFilterTimer); clientsFilterTimer = setTimeout(renderClientsGrid, 90); }
         function renderClientsGrid() {
             const a = isAdmin(), fq = norm(document.getElementById('clients-tab-filter')?.value || ''), dq = digits(fq);
             const list = appState.clients.filter(c => !fq || norm(c.name).includes(fq) || (dq.length >= 2 && digits(c.phone).includes(dq)) || (dq.length >= 2 && digits(c.cpf).includes(dq)) || (c.vehicles || []).some(v => norm(v.plate).includes(fq) || norm(v.model).includes(fq)) || (c.rugs || []).some(r => norm(r.tag).includes(fq)));
@@ -973,9 +1082,6 @@
                 ? list.map(c => '<div class="bg-white rounded-2xl border p-4 space-y-2 text-xs"><div class="flex justify-between"><strong>' + esc(c.name) + '</strong>' + (a ? '<div class="flex gap-2"><button type="button" data-cid="' + esc(c.id) + '" onclick="openNewClientModal(this.dataset.cid)" class="text-brand-600"><i class="fa-solid fa-pen"></i></button><button type="button" data-cid="' + esc(c.id) + '" onclick="deleteClient(this.dataset.cid)" class="text-red-500"><i class="fa-solid fa-trash-can"></i></button></div>' : '') + '</div><p class="flex items-center justify-between text-slate-600"><span>' + esc(c.phone) + '</span>' + (digits(c.phone).length >= 10 ? '<a href="https://wa.me/55' + digits(c.phone) + '" target="_blank" rel="noopener" class="text-emerald-600 font-bold"><i class="fa-brands fa-whatsapp text-sm"></i></a>' : '') + '</p><div class="flex gap-2"><button type="button" data-cid="' + esc(c.id) + '" onclick="openClientItemsModal(this.dataset.cid)" class="flex-1 py-2 rounded-xl bg-slate-900 text-white font-bold">Ficha & Fotos</button><button type="button" data-cid="' + esc(c.id) + '" onclick="openOSModal(null,this.dataset.cid)" class="px-3 py-2 rounded-xl bg-brand-600 text-white font-bold">+ OS</button></div></div>').join('')
                 : '<p class="col-span-full bg-white rounded-2xl border p-6 text-center text-xs text-slate-500">Nenhum cliente encontrado.</p>';
         }
-        let clientsFilterTimer = null;
-        function debouncedRenderClientsGrid() { clearTimeout(clientsFilterTimer); clientsFilterTimer = setTimeout(renderClientsGrid, 90); }
-
         function renderOSList() {
             const a = isAdmin();
             const list = appState.orders.filter(o => activeOSFilter === 'all' || (activeOSFilter === 'active' && ['Na Fila', 'Em Lavagem'].includes(o.status)) || o.status === activeOSFilter);
@@ -987,6 +1093,7 @@
                 : '<p class="p-6 text-center text-xs text-slate-500">Nenhuma OS encontrada.</p>';
         }
 
+        // --- Preços & Equipe ---
         async function saveCarModelPrice(e) {
             e.preventDefault(); if (!reqAdmin()) return;
             const m = document.getElementById('car-price-model').value.trim();
@@ -1002,6 +1109,13 @@
         function delCarPrice(id) { if (!reqAdmin()) return; openConfirm('Excluir Modelo', 'Remover este modelo da tabela?', async () => { appState.priceTable.carModels = appState.priceTable.carModels.filter(m => m.id !== id); await saveState(); renderAll(); }); }
         async function updateRugRatesConfig() { if (!reqAdmin()) return; const v = dec(document.getElementById('rug-default-m2-input').value); if (v > 0) { appState.priceTable.rugDefaultM2 = v; updateRugSimResult(); await saveState(); showToast('Valor m² salvo!'); } }
         async function updateRugMatRate(mat, val) { if (!reqAdmin()) return; const v = dec(val); if (v > 0) { appState.priceTable.rugMaterialRates = appState.priceTable.rugMaterialRates || {}; appState.priceTable.rugMaterialRates[mat] = v; await saveState(); showToast('Preço por m² atualizado!'); } }
+        async function updateWashAddonPrice(addonId, val) {
+            if (!reqAdmin()) return;
+            const v = dec(val);
+            if (v < 0) { showToast('Informe um valor válido (>= 0).', 'error'); return; }
+            const addon = ensureWashAddons().find(a => a.id === addonId);
+            if (addon) { addon.price = +v.toFixed(2); await saveState(); showToast(addon.label + ' atualizado para ' + brl(addon.price) + '!'); }
+        }
         function updateRugSimResult() { const m2 = dec(document.getElementById('rug-sim-m2')?.value), out = document.getElementById('rug-sim-total'); if (out) out.textContent = brl(m2 * Number(appState.priceTable.rugDefaultM2 || 25)); }
 
         async function adminCreateEmployeeAccount(e) {
@@ -1027,10 +1141,11 @@
 
         function renderAll() {
             updateCounts(); const a = isAdmin();
+            const todayStr = new Date().toISOString().slice(0, 10);
+            document.getElementById('kpi-today-os').textContent = appState.orders.filter(o => (o.createdAt || '').slice(0, 10) === todayStr).length;
             document.getElementById('kpi-active-os').textContent = appState.orders.filter(o => ['Na Fila', 'Em Lavagem'].includes(o.status)).length;
             document.getElementById('kpi-ready-os').textContent = appState.orders.filter(o => o.status === 'Pronto').length;
             document.getElementById('kpi-revenue-paid').textContent = brl(appState.orders.filter(o => o.paymentStatus === 'Pago').reduce((s, o) => s + dec(o.price), 0));
-            document.getElementById('kpi-revenue-pending').textContent = brl(appState.orders.filter(o => o.paymentStatus !== 'Pago').reduce((s, o) => s + dec(o.price), 0));
             renderOSList(); renderClientsGrid();
             document.getElementById('car-models-price-list').innerHTML = appState.priceTable.carModels.map(m =>
                 '<div class="py-2 flex justify-between items-center text-xs"><span>' + esc(m.model) + (m.category ? ' <span class="text-slate-400">(' + esc(m.category) + ')</span>' : '') + '</span><div class="flex items-center gap-2"><strong>' + brl(m.price) + '</strong>' + (a ? '<button type="button" data-mid="' + esc(m.id) + '" onclick="delCarPrice(this.dataset.mid)" class="text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>' : '') + '</div></div>'
@@ -1044,9 +1159,16 @@
                     return '<div class="flex justify-between items-center p-2 rounded-xl border bg-slate-50"><span>' + esc(t) + '</span><input type="text" inputmode="decimal" data-mat="' + esc(t) + '" ' + (a ? '' : 'readonly') + ' value="' + rv.toFixed(2).replace('.', ',') + '" onchange="updateRugMatRate(this.dataset.mat,this.value)" class="w-20 px-2 py-1 rounded border bg-white font-bold text-right"></div>';
                 }).join('');
             }
+            const waEl = document.getElementById('wash-addons-price-list');
+            if (waEl) {
+                waEl.innerHTML = ensureWashAddons().map(item =>
+                    '<div class="flex justify-between items-center gap-2 p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/40"><div class="min-w-0"><strong class="text-slate-900 block truncate">' + esc(item.label) + '</strong><span class="text-[10px] text-slate-500">Adicional na OS</span></div><div class="flex items-center gap-1 flex-shrink-0"><span class="text-slate-500 font-bold">+ R$</span><input type="text" inputmode="decimal" data-aid="' + esc(item.id) + '" ' + (a ? '' : 'readonly') + ' value="' + Number(item.price || 0).toFixed(2).replace('.', ',') + '" onchange="updateWashAddonPrice(this.dataset.aid,this.value)" class="w-20 px-2 py-1.5 rounded-lg border border-emerald-300 bg-white font-extrabold text-right text-emerald-800"></div></div>'
+                ).join('');
+            }
             updateRugSimResult(); renderTeamTab(); applyRoleUI();
         }
 
+        // --- Backup & Google Drive ---
         function exportBackupJSON() {
             if (!reqAdmin()) return;
             const b = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
@@ -1061,6 +1183,7 @@
                     const parsed = JSON.parse(ev.target.result);
                     if (!parsed || !Array.isArray(parsed.clients) || !Array.isArray(parsed.orders)) { showToast('Arquivo JSON inválido.', 'error'); return; }
                     appState = { ...appState, ...parsed };
+                    ensureWashAddons();
                     await saveState(); verifySession(); renderAll(); showToast('Backup restaurado!');
                 } catch (err) { showToast('Erro ao ler backup JSON.', 'error'); }
             };
@@ -1072,22 +1195,27 @@
             const b = new Blob(['\uFEFFOS;Cliente;Item;Servico;Valor;Status\n' + rows.join('\n')], { type: 'text/csv' });
             const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'relatorio_cidao.csv'; a.click();
         }
-
         function handleDrivePillClick() { if (isAdmin()) openGoogleDriveModal(); else syncBidirectionalGoogleDrive(false); }
         function openGoogleDriveModal() { if (!reqAdmin()) return; document.getElementById('gdrive-script-url').value = gdriveConfig.scriptUrl || ''; openModal('gdrive-modal'); }
         function copyAppsScriptTemplate() {
             const code = [
                 'function doPost(e){var b=JSON.parse(e.postData.contents);var fs=DriveApp.getFoldersByName("Lava_Rapido_Cidao_Backups");var f=fs.hasNext()?fs.next():DriveApp.createFolder("Lava_Rapido_Cidao_Backups");var fl=f.getFilesByName("backup_cidao.json");if(fl.hasNext())fl.next().setContent(b.payload);else f.createFile("backup_cidao.json",b.payload,MimeType.PLAIN_TEXT);return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);}',
-                'function doGet(e){var fs=DriveApp.getFoldersByName("Lava_Rapido_Cidao_Backups");if(!fs.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);var fl=fs.next().getFilesByName("backup_cidao.json");if(!fl.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);return ContentService.createTextOutput(JSON.stringify({ok:true,backup:JSON.parse(fl.next().getBlob().getDataAsString())})).setMimeType(ContentService.MimeType.JSON);}'
+                'function doGet(e){var fs=DriveApp.getFoldersByName("Lava_Rapido_Cidao_Backups");if(!fs.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);var fl=f.getFilesByName("backup_cidao.json");if(!fl.hasNext())return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);return ContentService.createTextOutput(JSON.stringify({ok:true,backup:JSON.parse(fl.next().getBlob().getDataAsString())})).setMimeType(ContentService.MimeType.JSON);}'
             ].join('\n');
             const ta = document.createElement('textarea'); ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
             document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-            showToast('Script copiado!');
+            showToast('Código do Apps Script copiado!');
         }
         async function saveDriveUrlAndSync() {
             gdriveConfig.scriptUrl = document.getElementById('gdrive-script-url').value.trim();
             localStorage.setItem(GDRIVE_KEY, JSON.stringify(gdriveConfig));
             updateNetworkPillUI(); closeModal('gdrive-modal');
+            await syncBidirectionalGoogleDrive(false);
+        }
+        async function saveDriveUrlFromTab() {
+            gdriveConfig.scriptUrl = document.getElementById('backup-drive-url-input').value.trim();
+            localStorage.setItem(GDRIVE_KEY, JSON.stringify(gdriveConfig));
+            updateNetworkPillUI();
             await syncBidirectionalGoogleDrive(false);
         }
         async function syncAccountFromDriveOnLogin(id) {
@@ -1103,6 +1231,7 @@
                 const data = await res.json();
                 if (data?.ok && data.backup && Number(data.backup.revisionTimestamp || 0) > Number(appState.revisionTimestamp || 0) && !gdriveConfig.pendingPush) {
                     appState = { ...appState, ...data.backup };
+                    ensureWashAddons();
                     await saveState(false); renderAll();
                     if (!silent) showToast('Atualizado do Google Drive!');
                     return;
@@ -1126,11 +1255,11 @@
         });
         window.addEventListener('DOMContentLoaded', () => {
             if ('caches' in window) {
-                caches.keys().then(ks => ks.filter(k => k !== 'lava-rapido-cidao-v23').forEach(k => caches.delete(k))).catch(() => {});
+                caches.keys().then(ks => ks.filter(k => k !== 'lava-rapido-cidao-v25').forEach(k => caches.delete(k))).catch(() => {});
             }
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.update())).catch(() => {});
-                navigator.serviceWorker.register('./sw.js?v=23').catch(() => {});
+                navigator.serviceWorker.register('./sw.js?v=25').catch(() => {});
             }
             loadState(); updateNetworkPillUI(); verifySession(); renderAll();
         });
