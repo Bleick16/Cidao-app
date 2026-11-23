@@ -506,7 +506,7 @@
                 <nav class="desk-nav">
                     <button type="button" id="nav-dashboard" class="nav-btn active" onclick="switchTab('dashboard')">📊 Início (OS)</button>
                     <button type="button" id="nav-clients" class="nav-btn" onclick="switchTab('clients')">👥 Clientes</button>
-                    <button type="button" id="nav-prices" class="nav-btn" onclick="switchTab('prices')">🏷 Preços &amp; Carros</button>
+                    <button type="button" id="nav-prices" class="nav-btn admin-only-el" onclick="switchTab('prices')">🔒 Preços &amp; Tabela</button>
                     <button type="button" id="nav-team" class="nav-btn admin-only-el" onclick="switchTab('team')">🛡 Equipe</button>
                     <button type="button" id="nav-backup" class="nav-btn admin-only-el" onclick="switchTab('backup')">☁ Drive / Backup</button>
                 </nav>
@@ -528,7 +528,7 @@
             <button type="button" id="mnav-dashboard" class="mnav-btn active" onclick="switchTab('dashboard')"><span class="ico">📊</span><span>Início</span></button>
             <button type="button" id="mnav-clients" class="mnav-btn" onclick="switchTab('clients')"><span class="ico">👥</span><span>Clientes</span></button>
             <button type="button" class="mnav-fab" onclick="openOSModal()"><span class="mnav-fab-circle">+</span><span>Nova OS</span></button>
-            <button type="button" id="mnav-prices" class="mnav-btn" onclick="switchTab('prices')"><span class="ico">🏷</span><span>Preços</span></button>
+            <button type="button" id="mnav-prices" class="mnav-btn admin-only-el" onclick="switchTab('prices')"><span class="ico">🔒</span><span>Preços</span></button>
             <button type="button" id="mnav-team" class="mnav-btn admin-only-el" onclick="switchTab('team')"><span class="ico">🛡</span><span>Equipe</span></button>
             <button type="button" id="mnav-backup" class="mnav-btn admin-only-el" onclick="switchTab('backup')"><span class="ico">☁</span><span>Drive</span></button>
         </nav>
@@ -610,12 +610,12 @@
                 <div id="clients-grid-container" class="clients-grid"></div>
             </section>
 
-            <!-- ABA 3: PREÇOS & CARROS -->
-            <section id="tab-prices" class="stack hidden">
+            <!-- ABA 3: PREÇOS & TABELA (EXCLUSIVA DO GERENTE / ADMINISTRADOR) -->
+            <section id="tab-prices" class="stack hidden admin-only-el">
                 <div class="card card-pad stack">
                     <div>
-                        <h2 class="section-title">🧶 Preço do Metro Quadrado (m²) — Tapetes</h2>
-                        <p style="font-size: 12px; color: var(--muted);">Altere aqui o preço por m² quando quiser — ao lançar 1 m², 7 m² ou qualquer metragem na OS, o valor calcula na hora.</p>
+                        <h2 class="section-title">🔒 Preço do Metro Quadrado (m²) — Tapetes (Área do Gerente)</h2>
+                        <p style="font-size: 12px; color: var(--muted);">Configure aqui o valor por m² dos tapetes. Os funcionários apenas informam a metragem na Nova OS e o sistema calcula automaticamente nos bastidores.</p>
                     </div>
                     <div class="row-between" style="background: var(--indigo-soft); border: 1px solid #c7d2fe; border-radius: 12px; padding: 10px 12px;">
                         <div class="row">
@@ -634,8 +634,8 @@
 
                 <div class="card card-pad stack">
                     <div>
-                        <h2 class="section-title">✨ Adicionais &amp; Serviços Extras</h2>
-                        <p style="font-size: 12px; color: var(--muted);">Edite quando quiser o valor da Cera, Brancol, Querosene, Higienização e Polimento — o valor atualizado vale imediatamente para as próximas OS.</p>
+                        <h2 class="section-title">✨ Adicionais &amp; Serviços Extras (Área do Gerente)</h2>
+                        <p style="font-size: 12px; color: var(--muted);">Defina aqui os valores da Cera, Brancol, Querosene, Higienização e Polimento. Na Nova OS aparecem apenas os botões de seleção para a equipe.</p>
                     </div>
                     <div id="wash-addons-price-list" class="addons-grid"></div>
                 </div>
@@ -643,7 +643,7 @@
                 <div class="card card-pad stack">
                     <div class="row-between">
                         <div>
-                            <h2 class="section-title">🚗 Catálogo de Carros do Brasil (Modelo - Marca)</h2>
+                            <h2 class="section-title">🚗 Tabela de Preços — Carros do Brasil (Modelo - Marca)</h2>
                             <p id="car-catalog-count" style="font-size: 11px; color: var(--muted);">Carregando catálogo...</p>
                         </div>
                     </div>
@@ -842,10 +842,12 @@
 
                     <!-- Painel Completo de Tapetes na OS (Metragem Livre + Preço m² Editável + Multi-Tapetes) -->
                     <div id="os-rug-multi-section" class="hidden stack" style="background: var(--indigo-soft); border: 1px solid #c7d2fe; border-radius: 14px; padding: 12px;">
+                    <!-- Painel Completo de Tapetes na OS (Sem Exibir Tarifas Unitárias) -->
+                    <div id="os-rug-multi-section" class="hidden stack" style="background: var(--indigo-soft); border: 1px solid #c7d2fe; border-radius: 14px; padding: 12px;">
                         <div class="row-between">
                             <div>
-                                <strong style="font-size: 12px; color: #1e1b4b;">🧶 Tapete(s) — Cálculo por m² &amp; Quantidade</strong>
-                                <div id="os-rug-active-rate-hint" style="font-size: 11px; color: #4338ca; font-weight: 700;">Tarifa atual: R$ 25,00 / m² • Digite qualquer metragem (1, 7, 2,5...)</div>
+                                <strong style="font-size: 12px; color: #1e1b4b;">🧶 Tapete(s) — Metragem &amp; Quantidade</strong>
+                                <div style="font-size: 11px; color: #4338ca; font-weight: 700;">Informe a quantidade, material e medidas (m²) — cálculo automático pela tabela do gerente</div>
                             </div>
                             <div class="qty-stepper">
                                 <button type="button" class="qty-btn" onclick="stepOSRugCount(-1)" title="Diminuir">−</button>
@@ -859,7 +861,7 @@
                             <div class="row-between">
                                 <span style="font-size: 11px; font-weight: 700; color: #312e81;">Modo de cálculo para <strong id="os-rug-mode-qty-lbl">2</strong> tapetes:</span>
                                 <div class="row" style="gap: 4px;">
-                                    <button type="button" id="os-rug-mode-multiply" class="filter-pill active" onclick="setOSRugCalcMode('multiply')">× Multiplicar medida/valor pela Qtd</button>
+                                    <button type="button" id="os-rug-mode-multiply" class="filter-pill active" onclick="setOSRugCalcMode('multiply')">× Multiplicar medida pela Qtd</button>
                                     <button type="button" id="os-rug-mode-totalm2" class="filter-pill" onclick="setOSRugCalcMode('total_m2')">📐 Área Total (m²) já somada</button>
                                 </div>
                             </div>
@@ -883,7 +885,7 @@
                             </div>
                             <div class="grid-2">
                                 <div>
-                                    <label class="label" id="os-rug-area-label">Área (m²) — Digite 1, 7, etc.</label>
+                                    <label class="label" id="os-rug-area-label">Área (m²) — Ex: 1, 7, 2,5...</label>
                                     <input type="text" inputmode="decimal" id="os-rug-area-input" oninput="recalcNewRugInOS('area')" placeholder="Ex: 1 ou 7" class="input" style="font-weight: 800; border-color: #818cf8;">
                                 </div>
                                 <div>
@@ -913,23 +915,21 @@
                         <div id="os-color-chips" class="row" style="gap: 5px;"></div>
                     </div>
 
-                    <!-- Valor Base + Total Final Calculado -->
-                    <div class="grid-2" style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: 12px; padding: 10px;">
-                        <div>
-                            <label class="label" id="os-base-price-label">Lavagem Base (R$)</label>
-                            <input type="text" inputmode="decimal" id="os-base-price" required oninput="onOSBasePriceManualInput()" placeholder="0,00" class="input" style="font-weight: 800;">
+                    <!-- Valor Total Calculado (Apenas Gerente pode editar manualmente para descontos) -->
+                    <div style="background: var(--emerald-soft); border: 1px solid #6ee7b7; border-radius: 12px; padding: 10px;">
+                        <input type="hidden" id="os-base-price" value="0,00">
+                        <div class="row-between" style="margin-bottom: 4px;">
+                            <label class="label" style="color: #065f46; margin: 0;">Valor Total da OS (R$)</label>
+                            <span id="os-price-lock-hint" style="font-size: 10px; font-weight: 700; color: #047857;">🔒 Calculado pela tabela do gerente</span>
                         </div>
-                        <div>
-                            <label class="label" style="color: #065f46;">Total Final (R$)</label>
-                            <input type="text" id="os-total-display" readonly class="input" style="font-weight: 800; background: var(--emerald-soft); border-color: #6ee7b7; color: #065f46;">
-                        </div>
+                        <input type="text" inputmode="decimal" id="os-total-display" oninput="onOSTotalManualInput()" class="input" style="font-weight: 800; font-size: 16px; background: #fff; border-color: #34d399; color: #065f46;">
                     </div>
 
-                    <!-- Adicionais Clicáveis -->
+                    <!-- Adicionais Clicáveis (Apenas Nomes dos Serviços) -->
                     <div style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: 12px; padding: 10px;" class="stack">
                         <div class="row-between">
                             <strong style="font-size: 12px;">+ Adicionais &amp; Serviços Extras</strong>
-                            <span id="os-addons-summary" style="font-size: 11px; font-weight: 800; color: var(--emerald);"></span>
+                            <span id="os-addons-badge" style="font-size: 11px; font-weight: 700; color: var(--brand);"></span>
                         </div>
                         <div id="os-addons-picker" class="row"></div>
                     </div>
@@ -1057,7 +1057,7 @@
         const STORAGE_KEY = 'lava_rapido_cidao_master_state_v6';
         const SESSION_KEY = 'lava_rapido_cidao_active_session_v2';
         const GDRIVE_KEY = 'lava_rapido_cidao_gdrive_cfg_v3';
-        const PHOTO_DB_NAME = 'cidao_photos_db_v36';
+        const PHOTO_DB_NAME = 'cidao_photos_db_v37';
         const PHOTO_STORE_NAME = 'photos';
         const photoUrlCache = new Map();
         let photoDbPromise = null;
@@ -1443,7 +1443,7 @@
         const brl = v => (Number.isFinite(Number(v)) ? Number(v) : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         const uid = p => p + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
         const isAdmin = () => session?.role === 'admin';
-        const reqAdmin = () => { if (!isAdmin()) { showToast('Acesso restrito ao Administrador.', 'error'); return false; } return true; };
+        const reqAdmin = () => { if (!isAdmin()) { showToast('Acesso restrito ao Gerente/Administrador.', 'error'); return false; } return true; };
 
         function getColorSwatchStyle(colorName) {
             const c = norm(colorName);
@@ -1807,7 +1807,10 @@
         }
 
         function switchTab(tab) {
-            if ((tab === 'team' || tab === 'backup') && !isAdmin()) tab = 'dashboard';
+            if ((tab === 'prices' || tab === 'team' || tab === 'backup') && !isAdmin()) {
+                if (tab === 'prices') showToast('Acesso restrito ao Gerente/Administrador.', 'error');
+                tab = 'dashboard';
+            }
             ['dashboard', 'clients', 'prices', 'team', 'backup'].forEach(t => {
                 document.getElementById('tab-' + t)?.classList.toggle('hidden', t !== tab);
                 document.getElementById('nav-' + t)?.classList.toggle('active', t === tab);
@@ -2177,9 +2180,9 @@
             const addonsSum = getSelectedAddonsSum();
             const total = +(base + addonsSum).toFixed(2);
             const disp = document.getElementById('os-total-display');
-            if (disp) disp.value = brl(total);
-            const summaryEl = document.getElementById('os-addons-summary');
-            if (summaryEl) summaryEl.textContent = addonsSum > 0 ? ('Extras: +' + brl(addonsSum)) : '';
+            if (disp) disp.value = total.toFixed(2).replace('.', ',');
+            const badgeEl = document.getElementById('os-addons-badge');
+            if (badgeEl) badgeEl.textContent = selectedOSAddons.length ? (selectedOSAddons.length + ' adicional(is) selecionado(s)') : '';
             const chosen = ensureWashAddons().filter(a => selectedOSAddons.includes(a.id));
             const baseName = osBaseService || 'Lavagem';
             const suffix = chosen.length ? ' + ' + chosen.map(a => a.name).join(' + ') : '';
@@ -2190,7 +2193,7 @@
             const container = document.getElementById('os-addons-picker'); if (!container) return;
             container.innerHTML = ensureWashAddons().map(a => {
                 const active = selectedOSAddons.includes(a.id);
-                return '<button type="button" class="addon-chip ' + (active ? 'active' : '') + '" data-aid="' + esc(a.id) + '" onclick="toggleOSAddon(this.dataset.aid)"><span>' + (active ? '✓' : '+') + '</span><span>' + esc(a.label) + '</span><span>(+' + brl(a.price) + ')</span></button>';
+                return '<button type="button" class="addon-chip ' + (active ? 'active' : '') + '" data-aid="' + esc(a.id) + '" onclick="toggleOSAddon(this.dataset.aid)"><span>' + (active ? '✓' : '+') + '</span><span>' + esc(a.label) + '</span></button>';
             }).join('');
         }
         function toggleOSAddon(addonId) {
@@ -2201,102 +2204,34 @@
             recalcOSTotal();
         }
         function onOSServiceManualInput(val) { osBaseService = stripAddonSuffixes(val); }
-        function onOSBasePriceManualInput() {
+        function onOSTotalManualInput() {
+            if (!isAdmin()) return;
+            const enteredTotal = Math.max(0, dec(document.getElementById('os-total-display')?.value));
+            const base = Math.max(0, +(enteredTotal - getSelectedAddonsSum()).toFixed(2));
+            const baseEl = document.getElementById('os-base-price');
+            if (baseEl) baseEl.value = base.toFixed(2).replace('.', ',');
             if (isActiveOSRugFlow() && osIndividualRugs.length === 0) {
-                const entered = Math.max(0, dec(document.getElementById('os-base-price')?.value));
-                osRugUnitBasePrice = osRugCalcMode === 'multiply' && osRugCount > 1 ? +(entered / osRugCount).toFixed(2) : entered;
+                osRugUnitBasePrice = osRugCalcMode === 'multiply' && osRugCount > 1 ? +(base / osRugCount).toFixed(2) : base;
             }
-            recalcOSTotal();
         }
-
-        function handleOSClientSearch(q) {
-            const d = document.getElementById('os-client-dropdown');
-            const nq = norm(q), dq = digits(q);
-            document.getElementById('os-selected-client-id').value = '';
-            const matches = appState.clients.filter(c =>
-                !nq || norm(c.name).includes(nq) || (dq.length >= 2 && digits(c.phone).includes(dq)) ||
-                (c.vehicles || []).some(v => norm(v.plate).includes(nq) || norm(v.model).includes(nq))
-            ).slice(0, 12);
-            if (!matches.length) { d.classList.add('hidden'); populateOSItemsForClient('', null, false); return; }
-            d.innerHTML = matches.map(c =>
-                '<div class="search-item" data-cid="' + esc(c.id) + '" onclick="selectOSClient(this.dataset.cid)"><div><strong>' + esc(c.name) + '</strong> <span style="color:#64748b;">' + esc(c.phone) + '</span></div><span style="font-size:11px;color:#2563eb;font-weight:700;">Selecionar</span></div>'
-            ).join('');
-            d.classList.remove('hidden');
-        }
-        function selectOSClient(cid, itemVal = null, auto = true) {
-            const c = appState.clients.find(x => x.id === cid);
-            document.getElementById('os-client-dropdown').classList.add('hidden');
-            if (!c) return;
-            document.getElementById('os-selected-client-id').value = c.id;
-            document.getElementById('os-client-search').value = c.name + (c.phone ? ' — ' + c.phone : '');
-            populateOSItemsForClient(c.id, itemVal, auto);
-        }
-        function populateOSItemsForClient(cid, itemVal = null, auto = true) {
-            const sel = document.getElementById('os-item-select');
-            const c = cid ? appState.clients.find(x => x.id === cid) : null;
-            const opts = [];
-            if (c) {
-                (c.vehicles || []).forEach(v => opts.push('<option value="vehicle:' + esc(v.id) + '" data-model="' + esc(v.model) + '" data-color="' + esc(v.color || '') + '">🚗 ' + esc(v.plate || 'SEM PLACA') + ' - ' + esc(v.model) + (v.color ? ' (' + esc(v.color) + ')' : '') + '</option>'));
-                (c.rugs || []).forEach(r => {
-                    const matNorm = normalizeRugMaterialName(r.type);
-                    opts.push('<option value="rug:' + esc(r.id) + '" data-tag="' + esc(r.tag || '') + '" data-width="' + Number(r.width || 0) + '" data-length="' + Number(r.length || 0) + '" data-area="' + Number(r.area || 0) + '" data-mat="' + esc(matNorm) + '" data-color="' + esc(r.color || '') + '">🧶 Tapete #' + esc(r.tag) + ' (' + Number(r.area || 0).toFixed(2) + ' m²' + (r.color ? ' • ' + esc(r.color) : '') + ')</option>');
-                });
+        function applyOSPriceFieldAccess() {
+            const a = isAdmin();
+            const disp = document.getElementById('os-total-display');
+            const hint = document.getElementById('os-price-lock-hint');
+            if (disp) {
+                disp.readOnly = !a;
+                disp.style.background = a ? '#fff' : '#ecfdf5';
             }
-            opts.push('<option value="general:avulso">✨ Novo Carro / Tapete(s) ou Serviço Avulso</option>');
-            sel.innerHTML = opts.join('');
-            if (itemVal) sel.value = itemVal;
-            if (auto) onOSItemChange();
-        }
-
-        function renderOSColorPicker(kind) {
-            const isRug = kind === 'rug';
-            const lbl = document.getElementById('os-color-label');
-            const inp = document.getElementById('os-item-color');
-            const chips = document.getElementById('os-color-chips');
-            if (lbl) lbl.textContent = isRug ? '🎨 Cor do Tapete' : '🎨 Cor do Carro';
-            if (inp) {
-                inp.setAttribute('list', isRug ? 'rug-colors-list' : 'car-colors-list');
-                inp.placeholder = isRug
-                    ? 'Toque numa cor abaixo ou digite (Ex: Bege, Cru/Off-White...)'
-                    : 'Toque numa cor abaixo ou digite (Ex: Prata, Azul Marinho...)';
+            if (hint) {
+                hint.textContent = a ? '👑 Gerente: ajuste manual liberado' : '🔒 Calculado automaticamente pela tabela do gerente';
             }
-            const quickList = isRug
-                ? ['Bege', 'Cinza', 'Marrom', 'Preto', 'Azul', 'Vermelho', 'Verde', 'Cru/Off-White', 'Colorido']
-                : ['Branco', 'Prata', 'Preto', 'Cinza', 'Vermelho', 'Azul', 'Marrom', 'Bege', 'Verde'];
-            if (chips) {
-                chips.innerHTML = quickList.map(col =>
-                    '<button type="button" class="color-chip" data-color="' + esc(col) + '" onclick="pickOSColor(this.dataset.color)"><span class="color-dot" style="background:' + getColorSwatchStyle(col) + ';"></span><span>' + esc(col) + '</span></button>'
-                ).join('');
-            }
-            syncOSColorChipActive();
         }
-        function pickOSColor(col) {
-            document.getElementById('os-item-color').value = col;
-            syncOSColorChipActive();
-        }
-        function syncOSColorChipActive() {
-            const cur = norm(document.getElementById('os-item-color')?.value || '');
-            document.querySelectorAll('#os-color-chips .color-chip').forEach(btn => {
-                btn.classList.toggle('active', norm(btn.dataset.color) === cur && cur !== '');
-            });
-        }
-
-        // --- Múltiplos Tapetes & Metragem Livre na OS ---
         function updateOSRugUIState() {
             const isRug = isActiveOSRugFlow();
             document.getElementById('os-rug-multi-section')?.classList.toggle('hidden', !isRug);
             if (!isRug) {
                 document.getElementById('os-single-color-box')?.classList.remove('hidden');
-                const baseLbl = document.getElementById('os-base-price-label');
-                if (baseLbl) baseLbl.textContent = 'Lavagem Base (R$)';
                 return;
-            }
-            const matSel = document.getElementById('os-rug-mat-select');
-            const activeMat = normalizeRugMaterialName(matSel?.value || DEFAULT_RUG_MATS[0]);
-            const activeRate = getRugRateForMaterial(activeMat);
-            const rateHintEl = document.getElementById('os-rug-active-rate-hint');
-            if (rateHintEl) {
-                rateHintEl.textContent = 'Tarifa atual (' + activeMat + '): ' + brl(activeRate) + '/m² • Digite qualquer metragem (1, 7, 2,5...)';
             }
             const hasIndiv = osIndividualRugs.length > 0;
             const qty = hasIndiv ? osIndividualRugs.length : Math.max(1, parseInt(osRugCount, 10) || 1);
@@ -2314,20 +2249,8 @@
             document.getElementById('os-rug-mode-multiply')?.classList.toggle('active', osRugCalcMode === 'multiply');
             document.getElementById('os-rug-mode-totalm2')?.classList.toggle('active', osRugCalcMode === 'total_m2');
             const areaLbl = document.getElementById('os-rug-area-label');
-            if (areaLbl) areaLbl.textContent = (!hasIndiv && qty > 1 && osRugCalcMode === 'total_m2') ? ('Área Total dos ' + qty + ' Tapetes (m²)') : 'Área (m²) — Digite 1, 7, etc.';
-            const baseLbl = document.getElementById('os-base-price-label');
-            if (baseLbl) {
-                if (hasIndiv) baseLbl.textContent = 'Soma dos ' + qty + ' Tapetes (R$)';
-                else if (qty > 1 && osRugCalcMode === 'multiply') baseLbl.textContent = 'Total (' + qty + 'x Tapetes) (R$)';
-                else baseLbl.textContent = 'Lavagem Base Tapete(s) (R$)';
-            }
+            if (areaLbl) areaLbl.textContent = (!hasIndiv && qty > 1 && osRugCalcMode === 'total_m2') ? ('Área Total dos ' + qty + ' Tapetes (m²)') : 'Área (m²) — Ex: 1, 7, 2,5...';
         }
-        function stepOSRugCount(delta) {
-            if (osIndividualRugs.length > 0) {
-                if (delta > 0) addOSIndividualRug();
-                else if (osIndividualRugs.length > 1) removeOSIndividualRug(osIndividualRugs.length - 1);
-                return;
-            }
             const next = Math.max(1, (parseInt(osRugCount, 10) || 1) + delta);
             osRugCount = next;
             updateOSRugUIState();
@@ -2379,8 +2302,7 @@
                     r.area = +Math.max(0, dec(document.getElementById('oir-a-' + idx)?.value)).toFixed(2);
                 }
                 const rate = getRugRateForMaterial(r.type);
-                const manualVal = Math.max(0, dec(document.getElementById('oir-val-' + idx)?.value));
-                r.price = r.area > 0 ? +(r.area * rate).toFixed(2) : +manualVal.toFixed(2);
+                r.price = r.area > 0 ? +(r.area * rate).toFixed(2) : 0;
             });
         }
         function onOSIndividualRugFieldChange(idx, source) {
@@ -2399,17 +2321,11 @@
             } else if (source === 'area') {
                 r.area = +Math.max(0, dec(document.getElementById('oir-a-' + idx)?.value)).toFixed(2);
             }
-            if (source === 'val') {
-                r.price = +Math.max(0, dec(document.getElementById('oir-val-' + idx)?.value)).toFixed(2);
-            } else if (r.area > 0) {
+            if (r.area > 0) {
                 const rate = getRugRateForMaterial(r.type);
                 r.price = +(r.area * rate).toFixed(2);
-                const vEl = document.getElementById('oir-val-' + idx);
-                if (vEl) vEl.value = r.price.toFixed(2).replace('.', ',');
             } else {
                 r.price = 0;
-                const vEl = document.getElementById('oir-val-' + idx);
-                if (vEl) vEl.value = '0,00';
             }
             recalcIndividualRugsSummary();
         }
@@ -2494,9 +2410,9 @@
                 '<div><label class="label">Comp (m)</label><input type="text" inputmode="decimal" id="oir-l-' + idx + '" value="' + (r.length ? String(r.length).replace('.', ',') : '') + '" oninput="onOSIndividualRugFieldChange(' + idx + ',\'dim\')" placeholder="Ex: 3,50" class="input"></div>' +
                 '</div>' +
                 '<div class="grid-3">' +
+                '<div class="grid-2">' +
                 '<div><label class="label">Área (m²)</label><input type="text" inputmode="decimal" id="oir-a-' + idx + '" value="' + (r.area ? String(r.area).replace('.', ',') : '') + '" oninput="onOSIndividualRugFieldChange(' + idx + ',\'area\')" placeholder="1, 7..." class="input" style="font-weight:800;"></div>' +
                 '<div><label class="label">Cor</label><input type="text" list="rug-colors-list" id="oir-col-' + idx + '" value="' + esc(r.color || '') + '" oninput="onOSIndividualRugFieldChange(' + idx + ',\'meta\')" placeholder="Bege, Cinza..." class="input"></div>' +
-                '<div><label class="label">Valor (R$)</label><input type="text" inputmode="decimal" id="oir-val-' + idx + '" value="' + Number(r.price || 0).toFixed(2).replace('.', ',') + '" oninput="onOSIndividualRugFieldChange(' + idx + ',\'val\')" class="input" style="font-weight:800;"></div>' +
                 '</div>' +
                 '<div><label class="label">Material</label><select id="oir-mat-' + idx + '" onchange="onOSIndividualRugFieldChange(' + idx + ',\'mat\')" class="select">' + DEFAULT_RUG_MATS.map(m => '<option value="' + esc(m) + '" ' + (matNorm === m ? 'selected' : '') + '>' + esc(m) + '</option>').join('') + '</select></div>' +
                 '</div>';
@@ -2569,7 +2485,7 @@
             const matches = list.filter(m => !nq || norm(m.model).includes(nq) || norm(m.brand).includes(nq) || norm(m.category).includes(nq)).slice(0, 15);
             if (!matches.length) { d.classList.add('hidden'); return; }
             d.innerHTML = matches.map(m =>
-                '<div class="search-item" data-mid="' + esc(m.id) + '" onclick="pickOSCarModel(this.dataset.mid)"><div><strong>' + esc(m.model) + '</strong> <span class="cat-tag">' + esc(m.category) + '</span></div><strong style="color:var(--emerald);">' + brl(m.price) + '</strong></div>'
+                '<div class="search-item" data-mid="' + esc(m.id) + '" onclick="pickOSCarModel(this.dataset.mid)"><div><strong>' + esc(m.model) + '</strong> <span class="cat-tag">' + esc(m.category) + '</span></div><span style="font-size:11px;color:#2563eb;font-weight:700;">Selecionar</span></div>'
             ).join('');
             d.classList.remove('hidden');
         }
@@ -2702,6 +2618,7 @@
                 document.getElementById('os-base-price').value = '0,00';
             }
             renderOSAddonsPicker();
+            applyOSPriceFieldAccess();
             recalcOSTotal();
             openModal('os-modal');
         }
@@ -3056,7 +2973,8 @@
             renderCarModelsPriceList();
         }
         function renderCarModelsPriceList() {
-            const a = isAdmin();
+            if (!isAdmin()) return;
+            const a = true;
             const q = norm(document.getElementById('price-car-search')?.value || '');
             const brandFilter = document.getElementById('price-brand-filter')?.value || 'Todas';
             const all = appState.priceTable.carModels || [];
@@ -3269,17 +3187,44 @@
 
             renderOSList();
             renderClientsGrid();
-            renderCarModelsPriceList();
-
-            const rIn = document.getElementById('rug-default-m2-input');
-            if (rIn) { rIn.readOnly = !a; rIn.value = Number(appState.priceTable.rugDefaultM2 || 25).toFixed(2).replace('.', ','); }
-            const rmEl = document.getElementById('rug-material-rates-list');
-            if (rmEl) {
-                rmEl.innerHTML = DEFAULT_RUG_MATS.map(t => {
-                    const rv = getRugRateForMaterial(t);
-                    return '<div class="row-between" style="padding:9px 11px;border-radius:12px;border:1px solid #c7d2fe;background:var(--indigo-soft);font-size:12px;"><strong style="color:#312e81;">' + esc(t) + '</strong><div class="row" style="flex-wrap:nowrap;"><span style="font-size:11px;color:#4338ca;font-weight:700;">R$/m²</span><input type="text" inputmode="decimal" class="price-input-inline" data-mat="' + esc(t) + '" ' + (a ? '' : 'readonly') + ' value="' + rv.toFixed(2).replace('.', ',') + '" onchange="updateRugMatRate(this.dataset.mat,this.value)"></div></div>';
-                }).join('');
+            if (a) {
+                renderCarModelsPriceList();
+                const rIn = document.getElementById('rug-default-m2-input');
+                if (rIn) { rIn.readOnly = false; rIn.value = Number(appState.priceTable.rugDefaultM2 || 25).toFixed(2).replace('.', ','); }
+                const rmEl = document.getElementById('rug-material-rates-list');
+                if (rmEl) {
+                    rmEl.innerHTML = DEFAULT_RUG_MATS.map(t => {
+                        const rv = getRugRateForMaterial(t);
+                        return '<div class="row-between" style="padding:9px 11px;border-radius:12px;border:1px solid #c7d2fe;background:var(--indigo-soft);font-size:12px;"><strong style="color:#312e81;">' + esc(t) + '</strong><div class="row" style="flex-wrap:nowrap;"><span style="font-size:11px;color:#4338ca;font-weight:700;">R$/m²</span><input type="text" inputmode="decimal" class="price-input-inline" data-mat="' + esc(t) + '" value="' + rv.toFixed(2).replace('.', ',') + '" onchange="updateRugMatRate(this.dataset.mat,this.value)"></div></div>';
+                    }).join('');
+                }
+                const waEl = document.getElementById('wash-addons-price-list');
+                if (waEl) {
+                    waEl.innerHTML = ensureWashAddons().map(item =>
+                        '<div class="addon-card"><div style="min-width:0;"><strong class="truncate" style="display:block;">' + esc(item.label) + '</strong><span style="font-size:10px;color:#475569;">Adicional na OS</span></div><div class="row" style="flex-wrap:nowrap;"><span style="font-weight:700;color:#475569;">+ R$</span><input type="text" inputmode="decimal" class="price-input-inline" style="border-color:#6ee7b7;color:#065f46;" data-aid="' + esc(item.id) + '" value="' + Number(item.price || 0).toFixed(2).replace('.', ',') + '" onchange="updateWashAddonPrice(this.dataset.aid,this.value)"></div></div>'
+                    ).join('');
+                }
+                updateRugSimResult();
+            } else {
+                ['car-models-price-list', 'rug-material-rates-list', 'wash-addons-price-list'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '';
+                });
             }
+            renderTeamTab(); applyRoleUI();
+        }
+
+        // --- Backup & Google Drive ---
+        function exportBackupJSON() {
+            if (!reqAdmin()) return;
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                appVersion: 'v37',
+                ...appState
+            };
+            const b = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'backup_cidao_v37.json'; a.click();
+        }
             const waEl = document.getElementById('wash-addons-price-list');
             if (waEl) {
                 waEl.innerHTML = ensureWashAddons().map(item =>
@@ -3388,11 +3333,11 @@
         });
         window.addEventListener('DOMContentLoaded', async () => {
             if ('caches' in window) {
-                caches.keys().then(ks => ks.filter(k => k !== 'cidao-pwa-v36').forEach(k => caches.delete(k))).catch(() => {});
+                caches.keys().then(ks => ks.filter(k => k !== 'cidao-pwa-v37').forEach(k => caches.delete(k))).catch(() => {});
             }
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.update())).catch(() => {});
-                navigator.serviceWorker.register('./sw.js?v=36').catch(() => {});
+                navigator.serviceWorker.register('./sw.js?v=37').catch(() => {});
             }
             loadState();
             await migrateLegacyPhotosToIndexedDB();
