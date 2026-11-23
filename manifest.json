@@ -1,8 +1,8 @@
 {
   "id": "lava-rapido-cidao-app",
-  "name": "Lava Rápido Cidão — Gestão & Tapetes",
+  "name": "Lava Rápido Cidão — Gestão, Tapetes & Produtos",
   "short_name": "Lava Rápido Cidão",
-  "description": "Sistema de gestão de clientes, placas, tapetes e ordens de serviço do Lava Rápido Cidão.",
+  "description": "Sistema de gestão de clientes, placas, tapetes, vendas de produtos e ordens de serviço do Lava Rápido Cidão.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
