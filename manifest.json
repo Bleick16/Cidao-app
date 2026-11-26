@@ -1,7 +1,9 @@
 {
+  "id": "./?v=64",
   "name": "Lava Rápido Cidão",
   "short_name": "Cidão Lava",
-  "start_url": "./index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#071a33",
   "theme_color": "#0f172a",
